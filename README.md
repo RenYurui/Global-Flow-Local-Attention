@@ -5,7 +5,7 @@ The source code for paper "Deep Image Spatial Transformation for Person Image Ge
 
 ## News
 
-* 2020.2.29  Code for pytorch are available now!
+* 2020.2.29  Code for PyTorch are available now!
 
 
 
@@ -20,7 +20,7 @@ The source code for paper "Deep Image Spatial Transformation for Person Image Ge
 
 #### Conda installation
 
-```shell
+```bash
 # 1. Create a conda virtual environment.
 conda create -n gfla python=3.6 -y
 source activate gfla
@@ -53,7 +53,7 @@ pip install -r requirement.txt
 
 - run the following code to split the train/test dataset.
 
-  ```python
+  ```bash
   python script/generate_fashion_datasets.py
   ```
 
@@ -63,9 +63,9 @@ pip install -r requirement.txt
 
 **The trained weights can be downloaded from [Fashion](https://drive.google.com/open?id=1r1di3JFgaxqbyGzuRKDhNsrROiNL0s3r),  [Market](https://drive.google.com/open?id=1be_PY61HrVLg2CUOvtNEqmaLtmY83Muw),  Face (coming soon), ShapeNet(coming soon).**
 
-Put the downloaded checkpoints to the floder [result](./result). Run the following codes to obtain the transformation results.
+Put the downloaded checkpoints to the folder [result](./result). Run the following codes to obtain the transformation results.
 
-```python
+```bash
 # Test over the DeepFashion dataset 
 python test.py \
 --name=pose_fashion_checkpoints \
@@ -91,15 +91,15 @@ python test.py \
 
 You can use the provided evaluation code to evaluate the performance of our model.
 
-```python
-# evaluate the performace (FID and LPIPS scores) over the DeepFashion dataset.
+```bash
+# evaluate the performance (FID and LPIPS scores) over the DeepFashion dataset.
 CUDA_VISIBLE_DEVICES=0 python -m  script.metrics \
 --gt_path=./dataset/fashion/test_256 \
 --distorated_path=./eval_results/fashion \
 --fid_real_path=./dataset/fashion/train_256 \
 --name=./fashion
 
-# evaluate the performace (FID and LPIPS scores) over the Market dataset.
+# evaluate the performance (FID and LPIPS scores) over the Market dataset.
 CUDA_VISIBLE_DEVICES=0 python -m  script.metrics \
 --gt_path=./dataset/market/test_12864 \
 --distorated_path=./eval_results/market \
@@ -115,9 +115,9 @@ CUDA_VISIBLE_DEVICES=0 python -m  script.metrics \
 
 We train our model in stages. The **Flow Field Estimator** is ﬁrst trained to generate ﬂow ﬁelds. Then we train **the whole model** in an end-to-end manner. 
 
-For example, If you want to train our model using DeepFashion dataset. You can use the following code.
+For example, If you want to train our model using the DeepFashion dataset. You can use the following code.
 
-```python
+```bash
 # First train the Flow Field Estimator.
 python train.py \
 --name=fashion \
@@ -150,7 +150,7 @@ http://localhost:8096
 
 ## Other Application
 
-Our model can be used to solve other tasks requiring spatial trasformation such as **Image Animation** and **View Synthesis**.
+Our model can be used to solve other tasks requiring spatial transformation such as **Image Animation** and **View Synthesis**.
 
 Details will come soon.
 
