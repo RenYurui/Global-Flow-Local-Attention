@@ -49,7 +49,7 @@ pip install -r requirement.txt
 
 - Unzip `img_highres.zip`. Then put the obtained folder **img_highres** under [./dataset/fashion](./dataset/fashion) . You will need to ask for password from the [dataset maintainers](http://mmlab.ie.cuhk.edu.hk/projects/DeepFashion/InShopRetrieval.html).
 
-- Download train/test key points annotations and the dataset list from [] including **fashion-pairs-train.csv**, **fashion-pairs-test.csv**, **fashion-annotation-train.csv**, **fashion-annotation-train.csv,** **train.lst**, **test.lst**. Put these files under the  [./dataset/fashion](./dataset/fashion)  directory.
+- Download train/test key points annotations and the dataset list from [Google Drive](https://drive.google.com/open?id=1BX3Bxh8KG01yKWViRY0WTyDWbJHju-SL) including **fashion-pairs-train.csv**, **fashion-pairs-test.csv**, **fashion-annotation-train.csv**, **fashion-annotation-train.csv,** **train.lst**, **test.lst**. Put these files under the  [./dataset/fashion](./dataset/fashion)  directory.
 
 - run the following code to split the train/test dataset.
 
