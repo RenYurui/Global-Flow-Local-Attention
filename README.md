@@ -1,7 +1,32 @@
 # Global-Flow-Local-Attention
 The source code for paper "Deep Image Spatial Transformation for Person Image Generation" (to appear in CVPR2020)
 
+<p align='center'>  
+  <img src='https://user-images.githubusercontent.com/30292465/75610977-29346680-5b51-11ea-900e-c24eee54ddfb.png' width='500'/>
+</p>
+<p align="center">
+  **Pose-based Image Generation** **Left**: generated results of our model; **Right**: Input source images.
+</p>
 
+
+
+<p align='center'>  
+  <img src='https://user-images.githubusercontent.com/30292465/75610997-410bea80-5b51-11ea-9492-5d7b911bf450.gif' width='200'/>
+  <img src='https://user-images.githubusercontent.com/30292465/75611009-5ed94f80-5b51-11ea-83a8-a30827f9f52e.gif' width='200'/>
+<!--   <img src='https://user-images.githubusercontent.com/30292465/75611012-71ec1f80-5b51-11ea-89f1-804a57d0112a.gif' width='225'/>
+  <img src='https://user-images.githubusercontent.com/30292465/75611018-83352c00-5b51-11ea-9f32-3e3ed7bf9f32.gif' width='225'/> -->
+</p>
+<p align='center'> 
+  **Image Animation** **Left**: Input image; **Right**: Output results.
+</p>
+
+<p align='center'>  
+  <img src='https://user-images.githubusercontent.com/30292465/75611012-71ec1f80-5b51-11ea-89f1-804a57d0112a.gif' width='300'/>
+  <img src='https://user-images.githubusercontent.com/30292465/75611018-83352c00-5b51-11ea-9f32-3e3ed7bf9f32.gif' width='300'/>
+</p>
+<p align='center'> 
+  **View Synthesis** **Form Left to Right**: Input image, Results of [Appearance Flow](https://arxiv.org/abs/1605.03557), Results of Ours, Ground-truth images.
+</p>
 
 ## News
 
