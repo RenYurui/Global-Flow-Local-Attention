@@ -59,7 +59,7 @@ pip install -r requirement.txt
 
   
 
-##Evaluation
+## Evaluation
 
 **The trained weights can be downloaded from [Fashion](https://drive.google.com/open?id=1r1di3JFgaxqbyGzuRKDhNsrROiNL0s3r),  [Market](https://drive.google.com/open?id=1be_PY61HrVLg2CUOvtNEqmaLtmY83Muw),  Face (coming soon), ShapeNet(coming soon).**
 
@@ -111,7 +111,7 @@ CUDA_VISIBLE_DEVICES=0 python -m  script.metrics \
 
 
 
-##Training
+## Training
 
 We train our model in stages. The **Flow Field Estimator** is ﬁrst trained to generate ﬂow ﬁelds. Then we train **the whole model** in an end-to-end manner. 
 
