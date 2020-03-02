@@ -205,6 +205,6 @@ Given **an input source image** and **a guidance video sequence** depicting the 
 
 #### View synthesis
 
-View synthesis requires generating novel views of objects or scenes based on arbitrary input views. In this task we use the car and chair categories of the ShapeNet dataset. See [VIEW_SYNTHESIS.md](VIEW_SYNTHESIS.md) for more details.
+View synthesis requires generating novel views of objects or scenes based on arbitrary input views. In this task we use the car and chair categories of the [ShapeNet dataset](https://www.shapenet.org). See [VIEW_SYNTHESIS.md](VIEW_SYNTHESIS.md) for more details.
 
 ## 
