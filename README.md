@@ -31,8 +31,9 @@ Our model can be ﬂexibly applied to tasks requiring spatial transformations su
   <img src='https://user-images.githubusercontent.com/30292465/75778006-fe852080-5d91-11ea-8e76-dd87f6c021f7.gif' width='900'/>
 </p>
 <p align='center'> 
-  <b>From Left to Right</b>: Real Video; Extracted Pose; Generated Video.
+  <b>From Left to Right</b>: Real Video; Extracted Pose; Animation Results.
 </p>
+
 
 <p align='center'>  
   <img src='https://user-images.githubusercontent.com/30292465/75610997-410bea80-5b51-11ea-9492-5d7b911bf450.gif' width='300'/>
