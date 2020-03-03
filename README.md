@@ -10,7 +10,7 @@
 
 # Global-Flow-Local-Attention
 
-The source code for paper "[Deep Image Spatial Transformation for Person Image Generation](https://arxiv.org/abs/2003.00696)" (to appear in CVPR2020)
+The source code for our paper "[Deep Image Spatial Transformation for Person Image Generation](https://arxiv.org/abs/2003.00696)" (to appear in CVPR2020)
 
 Our model can be ﬂexibly applied to tasks requiring spatial transformations such as:
 
@@ -28,7 +28,7 @@ Our model can be ﬂexibly applied to tasks requiring spatial transformations su
 * **Image Animation**
 
 <p align='center'>  
-  <img src='https://user-images.githubusercontent.com/30292465/75775699-7ac93500-5d8d-11ea-991f-5b99ae88290c.gif' width='900'/>
+  <img src='https://user-images.githubusercontent.com/30292465/75778006-fe852080-5d91-11ea-8e76-dd87f6c021f7.gif' width='900'/>
 </p>
 <p align='center'> 
   <b>From Left to Right</b>: Real Video; Extracted Pose; Generated Video.
@@ -167,7 +167,7 @@ CUDA_VISIBLE_DEVICES=0 python -m  script.metrics \
 
 **Note**: 
 
-* We calculate the LPIPS scores using the code provided by the official repository [PerceptualSimilarity](https://github.com/richzhang/PerceptualSimilarity). Please clone their repository and put the folder **PerceptualSimilarity** to the floder [script](./script).
+* We calculate the LPIPS scores using the code provided by the official repository [PerceptualSimilarity](https://github.com/richzhang/PerceptualSimilarity). Please clone their repository and put the folder **PerceptualSimilarity** to the folder [script](./script).
 * For FID, the real data distributions are calculated over the whole training set. 
 
 
@@ -221,6 +221,6 @@ Given **an input source image** and **a guidance video sequence** depicting the 
 
 #### View synthesis
 
-View synthesis requires generating novel views of objects or scenes based on arbitrary input views. In this task we use the car and chair categories of the [ShapeNet dataset](https://www.shapenet.org). See [VIEW_SYNTHESIS.md](VIEW_SYNTHESIS.md) for more details.
+View synthesis requires generating novel views of objects or scenes based on arbitrary input views. In this task, we use the car and chair categories of the [ShapeNet dataset](https://www.shapenet.org). See [VIEW_SYNTHESIS.md](VIEW_SYNTHESIS.md) for more details.
 
 ## 
