@@ -1,14 +1,23 @@
-# Global-Flow-Local-Attention
-[Project](https://renyurui.github.io/GFLA-web/)|Arxiv
+<p align='center'>
+  <b>
+    <a href="https://renyurui.github.io/GFLA-web"> Website</a>
+    | 
+    <a href="https://arxiv.org/abs/2003.00696">ArXiv</a>
+    | 
+    <a href="./README.md/#other-application">Application</a>
+  </b>
+</p> 
 
-The source code for paper "Deep Image Spatial Transformation for Person Image Generation" (to appear in CVPR2020)
+# Global-Flow-Local-Attention
+
+The source code for paper "[Deep Image Spatial Transformation for Person Image Generation](https://arxiv.org/abs/2003.00696)" (to appear in CVPR2020)
 
 Our model can be ﬂexibly applied to tasks requiring spatial transformations such as:
 
 * **Pose-based Image Generation:**
 
 <p align='center'>  
-  <img src='https://user-images.githubusercontent.com/30292465/75610977-29346680-5b51-11ea-900e-c24eee54ddfb.png' width='500'/>
+  <img src='https://user-images.githubusercontent.com/30292465/75610977-29346680-5b51-11ea-900e-c24eee54ddfb.png' width='700'/>
 </p>
 <p align='center'> 
   <b>Left:</b> generated results of our model; <b>Right:</b> Input source images.
@@ -19,10 +28,8 @@ Our model can be ﬂexibly applied to tasks requiring spatial transformations su
 * **Image Animation**
 
 <p align='center'>  
-  <img src='https://user-images.githubusercontent.com/30292465/75610997-410bea80-5b51-11ea-9492-5d7b911bf450.gif' width='200'/>
-  <img src='https://user-images.githubusercontent.com/30292465/75611009-5ed94f80-5b51-11ea-83a8-a30827f9f52e.gif' width='200'/>
-<!--   <img src='https://user-images.githubusercontent.com/30292465/75611012-71ec1f80-5b51-11ea-89f1-804a57d0112a.gif' width='225'/>
-  <img src='https://user-images.githubusercontent.com/30292465/75611018-83352c00-5b51-11ea-9f32-3e3ed7bf9f32.gif' width='225'/> -->
+  <img src='https://user-images.githubusercontent.com/30292465/75610997-410bea80-5b51-11ea-9492-5d7b911bf450.gif' width='300'/>
+  <img src='https://user-images.githubusercontent.com/30292465/75611009-5ed94f80-5b51-11ea-83a8-a30827f9f52e.gif' width='300'/>
 </p>
 <p align='center'> 
   <b>Left</b>: Input image; <b>Right</b>: Output results.
@@ -46,8 +53,8 @@ Our model can be ﬂexibly applied to tasks requiring spatial transformations su
 </p>
 
 ## News
-
-* 2020.2.29  Code for PyTorch are available now!
+* 2020.3.3   [Project Website](https://renyurui.github.io/GFLA-web) and [Paper](https://arxiv.org/abs/2003.00696) are avaliable!
+* 2020.2.29  Code for PyTorch is available now!
 
 
 
