@@ -28,6 +28,13 @@ Our model can be ﬂexibly applied to tasks requiring spatial transformations su
 * **Image Animation**
 
 <p align='center'>  
+  <img src='https://user-images.githubusercontent.com/30292465/75775699-7ac93500-5d8d-11ea-991f-5b99ae88290c.gif' width='900'/>
+</p>
+<p align='center'> 
+  <b>From Left to Right</b>: Real Video; Extracted Pose; Generated Video.
+</p>
+
+<p align='center'>  
   <img src='https://user-images.githubusercontent.com/30292465/75610997-410bea80-5b51-11ea-9492-5d7b911bf450.gif' width='300'/>
   <img src='https://user-images.githubusercontent.com/30292465/75611009-5ed94f80-5b51-11ea-83a8-a30827f9f52e.gif' width='300'/>
 </p>
