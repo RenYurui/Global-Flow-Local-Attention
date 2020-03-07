@@ -224,4 +224,17 @@ Given **an input source image** and **a guidance video sequence** depicting the 
 
 View synthesis requires generating novel views of objects or scenes based on arbitrary input views. In this task, we use the car and chair categories of the [ShapeNet dataset](https://www.shapenet.org). See [VIEW_SYNTHESIS.md](VIEW_SYNTHESIS.md) for more details.
 
-## 
+##Citation
+
+```tex
+@article{ren2020deep,
+  title={Deep Image Spatial Transformation for Person Image Generation},
+  author={Ren, Yurui and Yu, Xiaoming and Chen, Junming and Li, Thomas H and Li, Ge},
+  journal={arXiv preprint arXiv:2003.00696},
+  year={2020}
+}
+```
+
+## Acknowledgement 
+
+We build our project based on [Vid2Vid](https://github.com/NVIDIA/vid2vid). Some dataset preprocessing methods are derived from [Pose-Transfer](https://github.com/tengteng95/Pose-Transfer).
