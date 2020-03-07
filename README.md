@@ -118,7 +118,7 @@ pip install -r requirement.txt
 
 ## Evaluation
 
-**The trained weights of our model can be downloaded from [Fashion](https://drive.google.com/open?id=1r1di3JFgaxqbyGzuRKDhNsrROiNL0s3r),  [Market](https://drive.google.com/open?id=1be_PY61HrVLg2CUOvtNEqmaLtmY83Muw),  Face (coming soon), ShapeNet(coming soon).**
+**The trained weights of our model can be downloaded from [Fashion](https://drive.google.com/open?id=1r1di3JFgaxqbyGzuRKDhNsrROiNL0s3r),  [Market](https://drive.google.com/open?id=1be_PY61HrVLg2CUOvtNEqmaLtmY83Muw),  [Face Animation](https://drive.google.com/open?id=1DwOR4F7dxEfqZTdQUvONPbJYJd3auTzF), ShapeNet(coming soon).**
 
 Put the obtained checkpoints under the correct directory of [result](./result). 
 
