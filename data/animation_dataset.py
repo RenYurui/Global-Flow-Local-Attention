@@ -57,7 +57,6 @@ class AnimationDataset(BaseDataset):
             self.frames_count.append(len(path))
             if self.opt.total_test_frames is not None:
                 assert self.opt.total_test_frames<=len(path), "Sequence %s does not have enough frames"%(os.path.dirname(path[0]))
-
         self.n_frames_total = self.opt.n_frames_total if self.opt.isTrain else self.opt.n_frames_pre_load_test
 
 
@@ -69,7 +68,7 @@ class AnimationDataset(BaseDataset):
             if self.opt.total_test_frames is not None:
                 self.change_seq = self.frame_idx >= (self.opt.total_test_frames + self.opt.start_frame) 
             else:
-                self.change_seq = self.frame_idx >= self.frames_count[self.seq_idx]
+                self.change_seq = self.frame_idx + self.opt.n_frames_pre_load_test  >= self.frames_count[self.seq_idx]
             if self.change_seq:
                 self.seq_idx += 1
                 self.frame_idx = self.opt.start_frame

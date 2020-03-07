@@ -155,7 +155,7 @@ class Face(BaseModel):
 
         if not self.isTrain:
             assert self.opt.batchSize == 1
-            if data['frame_idx'] == self.opt.n_frames_pre_load_test:
+            if data['frame_idx'] == self.opt.start_frame + self.opt.n_frames_pre_load_test:
                 self.P_previous = None
                 self.BP_previous = None
                 self.P_reference  = data['P'][:,:opt.image_nc, ...].cuda()

@@ -30,6 +30,7 @@ class FaceDataset(AnimationDataset):
             parser.add_argument('--start_frame', type=int, default=0, help='frame index to start inference on')        
             parser.set_defaults(total_test_frames=None)
             parser.set_defaults(n_frames_pre_load_test=6)
+            parser.set_defaults(nThreads=1)
 
         parser.set_defaults(structure_nc=16)
         parser.set_defaults(image_nc=3)
