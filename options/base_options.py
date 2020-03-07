@@ -23,7 +23,6 @@ class BaseOptions():
         parser.add_argument('--continue_train', action='store_true', help='continue training: load the latest model')
 
 
-
         # input/output sizes
         parser.add_argument('--batchSize', type=int, default=8, help='input batch size')
         parser.add_argument('--old_size', type=int, default=(256,256), help='Scale images to this size. The final image will be cropped to --crop_size.')
@@ -32,19 +31,12 @@ class BaseOptions():
         parser.add_argument('--image_nc', type=int, default=3 )
 
         # for setting inputs
-        # parser.add_argument('--dataroot', type=str, default='./dataset/market_data/')
-        # parser.add_argument('--dataset_mode', type=str, default='market')
-
-        parser.add_argument('--dataroot', type=str, default='./dataset/fashion_data_highres/')
-        parser.add_argument('--dataset_mode', type=str, default='fashionlarge')
-        # parser.add_argument('--dataroot', type=str, default='./dataset/fashion_data/')
-        # parser.add_argument('--dataset_mode', type=str, default='fashion')        
+        parser.add_argument('--dataroot', type=str, default='./dataset/fashion/')
+        parser.add_argument('--dataset_mode', type=str, default='fashion')
         parser.add_argument('--fid_gt_path', type=str)
         parser.add_argument('--serial_batches', action='store_true', help='if true, takes images in order to make batches, otherwise takes them randomly')
         parser.add_argument('--nThreads', default=8, type=int, help='# threads for loading data')
         parser.add_argument('--max_dataset_size', type=int, default=sys.maxsize, help='Maximum number of samples allowed per dataset. If the dataset directory contains more than max_dataset_size, only a subset is loaded.')
-
-
 
         # display parameter define
         parser.add_argument('--display_winsize', type=int, default=256, help='display window size')
@@ -82,10 +74,6 @@ class BaseOptions():
         opt = self.gather_options()
         opt.isTrain = self.isTrain
 
-        # opt.semantic_nc = opt.label_nc + \
-        #     (1 if opt.contain_dontcare_label else 0) + \
-        #     (0 if opt.no_instance else 1) + \
-        #     (1) # no provided label
             
         if opt.phase != 'val':
             self.print_options(opt)

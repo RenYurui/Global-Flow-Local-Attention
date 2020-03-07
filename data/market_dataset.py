@@ -1,8 +1,3 @@
-"""
-Copyright (C) 2019 NVIDIA Corporation.  All rights reserved.
-Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
-"""
-
 import os.path
 from data.base_dataset import BaseDataset
 from data.image_folder import make_dataset
@@ -17,7 +12,6 @@ class MarketDataset(BaseDataset):
     @staticmethod
     def modify_commandline_options(parser, is_train):
         parser = BaseDataset.modify_commandline_options(parser, is_train)
-        parser.set_defaults(preprocess_mode='resize_and_crop')
         if is_train:
             parser.set_defaults(load_size=(128, 64))
             parser.set_defaults(angle=(-5, 5))
@@ -29,7 +23,6 @@ class MarketDataset(BaseDataset):
             parser.set_defaults(angle=False)
             parser.set_defaults(shift=False)
             parser.set_defaults(scale=False)            
-        parser.set_defaults(fid_gt_path='./dataset/market_data/train_128')
         parser.set_defaults(old_size=(128, 64))
         parser.set_defaults(structure_nc=18)
         parser.set_defaults(image_nc=3)
