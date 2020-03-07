@@ -237,4 +237,4 @@ View synthesis requires generating novel views of objects or scenes based on arb
 
 ## Acknowledgement 
 
-We build our project based on [Vid2Vid](https://github.com/NVIDIA/vid2vid). Some dataset preprocessing methods are derived from [Pose-Transfer](https://github.com/tengteng95/Pose-Transfer).
+We build our project base on [Vid2Vid](https://github.com/NVIDIA/vid2vid). Some dataset preprocessing methods are derived from [Pose-Transfer](https://github.com/tengteng95/Pose-Transfer).
