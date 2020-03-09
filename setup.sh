@@ -2,7 +2,7 @@ cd ./model/networks/block_extractor
 python setup.py install --user
 
 cd ..
-cd block_extractor
+cd local_attn_reshape
 python setup.py install --user
 
 cd ..
