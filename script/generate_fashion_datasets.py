@@ -55,12 +55,12 @@ def make_dataset(dir):
 				path_names = "".join(path_names)
 				# img = Image.open(path)
 				if path_names in train_images:
-					# shutil.copy(path, os.path.join(train_root, path_names))
-					# print(os.path.join(train_root, path_names))
-					pass
+					shutil.copy(path, os.path.join(train_root, path_names))
+					print(os.path.join(train_root, path_names))
+# 					pass
 				elif path_names in test_images:
-					# shutil.copy(path, os.path.join(test_root, path_names))
-					# print(os.path.join(train_root, path_names))
-					pass
+					shutil.copy(path, os.path.join(test_root, path_names))
+					print(os.path.join(train_root, path_names))
+# 					pass
 
 make_dataset('./dataset/fashion/')
