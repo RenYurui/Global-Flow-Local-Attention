@@ -232,20 +232,20 @@ class PerceptualCorrectness(nn.Module):
         self.eps=1e-8 
         self.resample = Resample2d(4, 1, sigma=2)
 
-    def __call__(self, target, source, flow_list, used_layers, norm_mask=None, use_bilinear_sampling=False):
+    def __call__(self, target, source, flow_list, used_layers, mask=None, use_bilinear_sampling=False):
         used_layers=sorted(used_layers, reverse=True)
         # self.target=target
         # self.source=source
         self.target_vgg, self.source_vgg = self.vgg(target), self.vgg(source)
         loss = 0
         for i in range(len(flow_list)):
-            loss += self.calculate_loss(flow_list[i], self.layer[used_layers[i]], norm_mask, use_bilinear_sampling)
+            loss += self.calculate_loss(flow_list[i], self.layer[used_layers[i]], mask, use_bilinear_sampling)
 
 
 
         return loss
 
-    def calculate_loss(self, flow, layer, norm_mask=None, use_bilinear_sampling=False):
+    def calculate_loss(self, flow, layer, mask=None, use_bilinear_sampling=False):
         target_vgg = self.target_vgg[layer]
         source_vgg = self.source_vgg[layer]
         [b, c, h, w] = target_vgg.shape
@@ -259,7 +259,12 @@ class PerceptualCorrectness(nn.Module):
 
         source_norm = source_all/(source_all.norm(dim=2, keepdim=True)+self.eps)
         target_norm = target_all/(target_all.norm(dim=1, keepdim=True)+self.eps)
-        correction = torch.bmm(source_norm, target_norm)                       #[b N2 N2]
+        try:
+            correction = torch.bmm(source_norm, target_norm)                       #[b N2 N2]
+        except:
+            print("An exception occurred")
+            print(source_norm.shape)
+            print(target_norm.shape)
         (correction_max,max_indices) = torch.max(correction, dim=1)
 
         # interple with bilinear sampling
@@ -270,13 +275,13 @@ class PerceptualCorrectness(nn.Module):
 
         correction_sample = F.cosine_similarity(input_sample, target_all)    #[b 1 N2]
         loss_map = torch.exp(-correction_sample/(correction_max+self.eps))
-        if norm_mask is None:
+        if mask is None:
             loss = torch.mean(loss_map) - torch.exp(torch.tensor(-1).type_as(loss_map))
         else:
-            norm_mask=F.interpolate(norm_mask, size=(target_vgg.size(2), target_vgg.size(3)))
-            norm_mask=norm_mask.view(-1, target_vgg.size(2)*target_vgg.size(3))
-            loss = (torch.sum(norm_mask*loss_map) - torch.exp(torch.tensor(-1).type_as(loss_map)))/(torch.sum(norm_mask)+self.eps)
-
+            mask=F.interpolate(mask, size=(target_vgg.size(2), target_vgg.size(3)))
+            mask=mask.view(-1, target_vgg.size(2)*target_vgg.size(3))
+            loss_map = loss_map - torch.exp(torch.tensor(-1).type_as(loss_map))
+            loss = torch.sum(mask * loss_map)/(torch.sum(mask)+self.eps)
 
         # print(correction_sample[0,2076:2082])
         # print(correction_max[0,2076:2082])
@@ -312,8 +317,6 @@ class PerceptualCorrectness(nn.Module):
         grid = (grid+flow).permute(0, 2, 3, 1)
         input_sample = F.grid_sample(source, grid).view(b, c, -1)
         return input_sample
-
-
 
 
 
