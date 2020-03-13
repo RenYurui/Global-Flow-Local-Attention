@@ -2,7 +2,6 @@ import torch
 from model.base_model import BaseModel
 from model.networks import base_function, external_function
 import model.networks as network
-from options import eval_options
 from util import task, util
 import itertools
 import data as Dataset
