@@ -39,22 +39,17 @@ class Face(BaseModel):
         parser.add_argument('--ratio_g2d', type=float, default=0.1, help='learning rate ratio G to D')
         parser.add_argument('--lambda_rec', type=float, default=5.0, help='weight for image reconstruction loss')
         parser.add_argument('--lambda_g', type=float, default=2.0, help='weight for generation loss')
-        parser.add_argument('--lambda_correct', type=float, default=5.0, help='weight for generation loss')
-        parser.add_argument('--lambda_style', type=float, default=500.0, help='weight for generation loss')
-        parser.add_argument('--lambda_content', type=float, default=0.5, help='weight for generation loss')
-        parser.add_argument('--lambda_regularization', type=float, default=0.0025, help='weight for generation loss')
+        parser.add_argument('--lambda_correct', type=float, default=5.0, help='weight for Sampling Correctness loss')
+        parser.add_argument('--lambda_style', type=float, default=500.0, help='weight for the VGG19 style loss')
+        parser.add_argument('--lambda_content', type=float, default=0.5, help='weight for the VGG19 content loss')
+        parser.add_argument('--lambda_regularization', type=float, default=0.0025, help='weight for the affine regularization loss')
         parser.add_argument('--frames_D_V', type=int, default=3, help='number of frames of D_V')
+        
 
-        parser.add_argument('--use_affine_regularization', action='store_false')
-        parser.add_argument('--use_vgg_loss', action='store_true')
         parser.add_argument('--use_spect_g', action='store_false')
         parser.add_argument('--use_spect_d', action='store_false')
-        parser.add_argument('--use_gan', action='store_false')
         parser.set_defaults(use_spect_g=False)
         parser.set_defaults(use_spect_d=True)
-        parser.set_defaults(use_vgg_loss=True)
-        parser.set_defaults(use_affine_regularization=True)
-        parser.set_defaults(use_gan=True)
         parser.set_defaults(display_freq=100)
         parser.set_defaults(eval_iters_freq=1000)
         parser.set_defaults(print_freq=100)
@@ -67,16 +62,13 @@ class Face(BaseModel):
     def __init__(self, opt):
         """Initial the pluralistic model"""
         BaseModel.__init__(self, opt)
-        self.loss_names = ['app_gen','correctness_p', 'correctness_r']
-        if opt.use_vgg_loss:
-            self.loss_names.append('content_gen')
-            self.loss_names.append('style_gen')
-        if opt.use_affine_regularization:
-            self.loss_names.append('regularization_p')
-            self.loss_names.append('regularization_r')
+        self.loss_names = ['app_gen','correctness_p', 'correctness_r','content_gen','style_gen',
+                            'regularization_p', 'regularization_r',
+                            'ad_gen','dis_img_gen',
+                            'ad_gen_v', 'dis_img_gen_v']
 
         self.visual_names = ['P_reference','BP_reference', 'P_frame_step','BP_frame_step','img_gen', 'flow_fields', 'masks']        
-        self.model_names = ['G']
+        self.model_names = ['G','D','D_V']
 
         self.FloatTensor = torch.cuda.FloatTensor if len(self.gpu_ids)>0 \
             else torch.FloatTensor
@@ -92,21 +84,14 @@ class Face(BaseModel):
 
         self.flow2color = util.flow2color()
 
-        if opt.use_gan:
-            self.model_names.append('D')
-            self.loss_names.append('ad_gen')
-            self.loss_names.append('dis_img_gen')
-            self.net_D = network.define_d(opt, ndf=32, img_f=128, layers=4, use_spect=opt.use_spect_d)
-            if len(opt.gpu_ids) > 1:
-                self.net_D = torch.nn.DataParallel(self.net_D, device_ids=self.gpu_ids)
+        self.net_D = network.define_d(opt, ndf=32, img_f=128, layers=4, use_spect=opt.use_spect_d)
+        if len(opt.gpu_ids) > 1:
+            self.net_D = torch.nn.DataParallel(self.net_D, device_ids=self.gpu_ids)
 
-            self.model_names.append('D_V')
-            self.loss_names.append('ad_gen_v')
-            self.loss_names.append('dis_img_gen_v')
-            input_nc = (opt.frames_D_V-1) * opt.image_nc
-            self.net_D_V = network.define_d(opt, input_nc=input_nc, ndf=32, img_f=128, layers=4, use_spect=opt.use_spect_d)
-            if len(opt.gpu_ids) > 1:
-                self.net_D_V = torch.nn.DataParallel(self.net_D_V, device_ids=self.gpu_ids)                
+        input_nc = (opt.frames_D_V-1) * opt.image_nc
+        self.net_D_V = network.define_d(opt, input_nc=input_nc, ndf=32, img_f=128, layers=4, use_spect=opt.use_spect_d)
+        if len(opt.gpu_ids) > 1:
+            self.net_D_V = torch.nn.DataParallel(self.net_D_V, device_ids=self.gpu_ids)                
 
         if self.isTrain:
             # define the loss functions
@@ -123,12 +108,11 @@ class Face(BaseModel):
                                                lr=opt.lr, betas=(0.0, 0.999))
             self.optimizers.append(self.optimizer_G)
 
-            if opt.use_gan:
-                self.optimizer_D = torch.optim.Adam(itertools.chain(
-                                    filter(lambda p: p.requires_grad, self.net_D.parameters()),
-                                    filter(lambda p: p.requires_grad, self.net_D_V.parameters())),
-                                    lr=opt.lr*opt.ratio_g2d, betas=(0.0, 0.999))
-                self.optimizers.append(self.optimizer_D)
+            self.optimizer_D = torch.optim.Adam(itertools.chain(
+                                filter(lambda p: p.requires_grad, self.net_D.parameters()),
+                                filter(lambda p: p.requires_grad, self.net_D_V.parameters())),
+                                lr=opt.lr*opt.ratio_g2d, betas=(0.0, 0.999))
+            self.optimizers.append(self.optimizer_D)
         else:
             self.results_dir_base = self.opt.results_dir
         self.setup(opt)
@@ -260,10 +244,9 @@ class Face(BaseModel):
                                                                     self.BP_reference,
                                                                     self.P_previous,
                                                                     self.BP_previous)
-            if self.opt.use_gan:
-                self.optimizer_D.zero_grad()
-                self.backward_D()
-                self.optimizer_D.step()
+            self.optimizer_D.zero_grad()
+            self.backward_D()
+            self.optimizer_D.step()
 
             # optimize the completion network parameters
             self.optimizer_G.zero_grad()
@@ -329,10 +312,9 @@ class Face(BaseModel):
             gt = self.P_frame_step[:,i,...]
             loss_app_gen += self.L1loss(gen, gt)
 
-            if self.opt.use_vgg_loss:
-                content_gen, style_gen = self.Vggloss(gen, gt) 
-                loss_style_gen += style_gen
-                loss_content_gen += content_gen
+            content_gen, style_gen = self.Vggloss(gen, gt) 
+            loss_style_gen += style_gen
+            loss_content_gen += content_gen
 
         self.loss_style_gen = loss_style_gen * self.opt.lambda_style
         self.loss_content_gen = loss_content_gen * self.opt.lambda_content            
@@ -356,9 +338,8 @@ class Face(BaseModel):
                                                     flow_p, self.opt.attn_layer)
             loss_correctness_p += correctness_p
             loss_correctness_r += correctness_r
-            if self.opt.use_affine_regularization:
-                loss_regularization_p += self.Regularization(flow_p)
-                loss_regularization_r += self.Regularization(flow_r)
+            loss_regularization_p += self.Regularization(flow_p)
+            loss_regularization_r += self.Regularization(flow_r)
 
 
         self.loss_correctness_p = loss_correctness_p * self.opt.lambda_correct     
@@ -368,24 +349,24 @@ class Face(BaseModel):
 
 
         # rec loss fake
-        if self.opt.use_gan:
-            base_function._freeze(self.net_D)
-            i = np.random.randint(len(self.img_gen))
-            fake = self.img_gen[i]
-            D_fake = self.net_D(fake)
-            self.loss_ad_gen = self.GANloss(D_fake, True, False) * self.opt.lambda_g
+        base_function._freeze(self.net_D)
+        i = np.random.randint(len(self.img_gen))
+        fake = self.img_gen[i]
+        D_fake = self.net_D(fake)
+        self.loss_ad_gen = self.GANloss(D_fake, True, False) * self.opt.lambda_g
 
-            ##########################################################################
-            base_function._freeze(self.net_D_V)
-            i = np.random.randint(len(self.img_gen)-self.opt.frames_D_V+1)
-            # fake = [self.img_gen[i]]
-            fake = []
-            for frame in range(self.opt.frames_D_V-1):
-                fake.append(self.img_gen[i+frame]-self.img_gen[i+frame+1])
-            fake = torch.cat(fake, dim=1)
-            D_fake = self.net_D_V(fake)
-            self.loss_ad_gen_v = self.GANloss(D_fake, True, False) * self.opt.lambda_g
-            ##########################################################################
+        ##########################################################################
+        base_function._freeze(self.net_D_V)
+        i = np.random.randint(len(self.img_gen)-self.opt.frames_D_V+1)
+        # fake = [self.img_gen[i]]
+        fake = []
+        for frame in range(self.opt.frames_D_V-1):
+            fake.append(self.img_gen[i+frame]-self.img_gen[i+frame+1])
+        fake = torch.cat(fake, dim=1)
+        D_fake = self.net_D_V(fake)
+        self.loss_ad_gen_v = self.GANloss(D_fake, True, False) * self.opt.lambda_g
+        ##########################################################################
+        
         total_loss = 0
         for name in self.loss_names:
             if name != 'dis_img_gen_v' and name != 'dis_img_gen':
