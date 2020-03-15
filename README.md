@@ -230,7 +230,7 @@ http://localhost:8096
 
  
 
-## Other Application
+## Other Applications
 
 Our model can be ﬂexibly applied to tasks requiring spatial transformation. We show two examples: **Image Animation** and **View Synthesis**.
 
