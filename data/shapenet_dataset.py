@@ -45,7 +45,6 @@ class ShapeNetDataset(BaseDataset):
     def get_paths(self, opt):
         root = opt.dataroot
         phase = 'test' if opt.phase == 'val' else opt.phase
-
         image_id_file  = os.path.join(root, 'id_%s_%s.txt' %(opt.sub_dataset_model, phase))
         image_name_file  = os.path.join(root, 'name_%s_%s.txt' %(opt.sub_dataset_model, phase))
         hdf5_file = os.path.join(root, 'data_%s.hdf5'% opt.sub_dataset_model)
