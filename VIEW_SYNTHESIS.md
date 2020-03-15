@@ -27,18 +27,18 @@ We use the chair and car categories of  [ShapeNet](http://www.shapenet.org) data
 
 * [Chair](https://drive.google.com/file/d/1-IbmdJqi37JozGuDJ42IzOFG_ZNAksni/view) (14G)
 
-And Put the files into [./dataset/ShapeNet](./dataset/ShapeNet). 
+And Put the files into `./dataset/ShapeNet`. 
 
-We split the dataset using the same method as that of [Multi-view to Novel-View]((https://github.com/shaohua0116/Multiview2Novelview)). Pleast download the TXT files from [here](https://drive.google.com/open?id=1v2mUFpAHklXQ0xnB_py7v02qq1P4yB03) and put these files into [./dataset/ShapeNet](./dataset/ShapeNet).
+We split the dataset using the same method as that of [Multi-view to Novel-View]((https://github.com/shaohua0116/Multiview2Novelview)). Pleast download the txt files from [here](https://drive.google.com/open?id=1v2mUFpAHklXQ0xnB_py7v02qq1P4yB03) and put these files into `./dataset/ShapeNet`.
 
 ### Training and Testing
 
 In order to test the model, you can download the **trained weights** from:
 
-* [View-Syn-Car](https://drive.google.com/open?id=1tD-s0gYPuXnvFY3X1l9ccsMLbhPEKm-b)
-* [View-Syn-Chair](https://drive.google.com/open?id=1hiDxZQ6frYhfqtuvy9tXYjCfofVarcCs)
+* [ShapeNet Car](https://drive.google.com/open?id=1tD-s0gYPuXnvFY3X1l9ccsMLbhPEKm-b)
+* [ShapeNet Chair](https://drive.google.com/open?id=1hiDxZQ6frYhfqtuvy9tXYjCfofVarcCs)
 
-Put them into [./result/shape_net_car_checkpoints](./result/shape_net_car_checkpoints),  [./result/shape_net_chair_checkpoints](./result/shape_net_chair_checkpoints) respectively.
+Put them into `./result/shape_net_car_checkpoints`,  `./result/shape_net_chair_checkpoints` respectively.
 
 Then you can run the following example code to obtain the generated results.
 

@@ -21,8 +21,8 @@ We discuss the details about the Face Image Animation here. We use the edge maps
 We use the real video of the [FaceForensics dataset](https://github.com/ondyari/FaceForensics). It contains 1000 Videos in total. We use 900 videos for training and 100 videos for testing. 
 
 * Crop the videos so that the movement of faces is dominant in the videos. 
-* Extract video frames and put the images into the forder [dataset/FaceForensics/train_data](./dataset/FaceForensics/train_data) 
-* Download face key point extractor `shape_predictor_68_face_landmarks.dat` form [here](https://github.com/davisking/dlib-models). Put the file under the forder [dataset/FaceForensics](./dataset/FaceForensics). 
+* Extract video frames and put the images into the forder `dataset/FaceForensics/train_data`
+* Download face key point extractor `shape_predictor_68_face_landmarks.dat` form [here](https://github.com/davisking/dlib-models). Put the file under the forder `dataset/FaceForensics`. 
 * Run the following code to generate the keypoint files for the extracted frames.
 
 ```bash
@@ -44,7 +44,9 @@ python train.py \
 --dataroot=./dataset/FaceForensics\
 ```
 
-You can download our trained model from [here](https://drive.google.com/open?id=1DwOR4F7dxEfqZTdQUvONPbJYJd3auTzF). Then run the following code to generate the animation videos.
+**You can download our trained model from [here](https://drive.google.com/open?id=1DwOR4F7dxEfqZTdQUvONPbJYJd3auTzF).** 
+
+Put the obtained weights into `./result/face_checkpoints`. Then run the following code to generate the animation videos.
 
 ```bash
 python test.py \
