@@ -21,7 +21,7 @@ We discuss the details about the novel view synthesis here. View synthesis requi
 
 ### Dataset Preparation
 
-We use the chair and car categories of  [ShapeNet](http://www.shapenet.org) dataset. Please download the preprocessed HDF5 files provided by [Multi-view to Novel view](https://github.com/shaohua0116/Multiview2Novelview): 
+We use the chair and car categories of the [ShapeNet](http://www.shapenet.org) dataset. Please download the preprocessed HDF5 files provided by [Multi-view to Novel view](https://github.com/shaohua0116/Multiview2Novelview): 
 
 * [Car](https://drive.google.com/file/d/1vrZURHH5irKrxPFuw6e9mZ3wh2RqzFC9/view) (150G)
 
