@@ -203,7 +203,7 @@ For example, If you want to train our model with the DeepFashion dataset. You ca
 # First train the Flow Field Estimator.
 python train.py \
 --name=fashion \
---model=pose_flow \
+--model=poseflownet \
 --attn_layer=2,3 \
 --kernel_size=2=5,3=3 \
 --gpu_id=0 \
