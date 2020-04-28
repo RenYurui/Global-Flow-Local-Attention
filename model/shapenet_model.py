@@ -13,7 +13,7 @@ import os
 
 class ShapeNet(BaseModel):
     def name(self):
-        return "ShapeNet Image Completion"
+        return "ShapeNet Novel View Synthesis"
 
     @staticmethod
     def modify_options(parser, is_train=True):
@@ -25,7 +25,6 @@ class ShapeNet(BaseModel):
         parser.add_argument('--netD', type=str, default='res', help='The name of net Discriminator')
         parser.add_argument('--init_type', type=str, default='orthogonal', help='Initial type')
 
-        # if is_train:
         parser.add_argument('--ratio_g2d', type=float, default=0.1, help='learning rate ratio G to D')
         parser.add_argument('--lambda_rec', type=float, default=5.0, help='weight for image reconstruction loss')
         parser.add_argument('--lambda_g', type=float, default=2.0, help='weight for generation loss')
@@ -43,7 +42,6 @@ class ShapeNet(BaseModel):
 
 
     def __init__(self, opt):
-        """Initial the pluralistic model"""
         BaseModel.__init__(self, opt)
         self.loss_names = ['app_gen','correctness_gen', 'content_gen', 'style_gen', 'regularization',
                            'ad_gen', 'dis_img_gen']
@@ -65,7 +63,6 @@ class ShapeNet(BaseModel):
         self.net_D = network.define_d(opt, ndf=32, img_f=128, layers=4, use_spect=opt.use_spect_d)
 
         if self.isTrain:
-            # define the loss functions
             self.GANloss = external_function.AdversarialLoss(opt.gan_mode).to(opt.device)
             self.L1loss = torch.nn.L1Loss()
             self.L2loss = torch.nn.MSELoss()
@@ -153,17 +150,9 @@ class ShapeNet(BaseModel):
                 util.save_image(img_numpy, gen_name) 
                 print(gen_name)                
                
-
-
-            
-
-
     def forward(self):
         source_list=[]
         self.img_gen, self.flow_fields, self.masks = self.net_G(self.input_P1, self.input_BP1, self.input_BP2)
-
-
-             
 
     def backward_D_basic(self, netD, real, fake):
         # Real

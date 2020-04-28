@@ -60,7 +60,6 @@ class Face(BaseModel):
 
 
     def __init__(self, opt):
-        """Initial the pluralistic model"""
         BaseModel.__init__(self, opt)
         self.loss_names = ['app_gen','correctness_p', 'correctness_r','content_gen','style_gen',
                             'regularization_p', 'regularization_r',
@@ -248,7 +247,6 @@ class Face(BaseModel):
             self.backward_D()
             self.optimizer_D.step()
 
-            # optimize the completion network parameters
             self.optimizer_G.zero_grad()
             self.backward_G()
             self.optimizer_G.step()

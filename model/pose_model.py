@@ -15,7 +15,7 @@ class Pose(BaseModel):
        Deep Spatial Transformation For Pose Based Image Generation
     """
     def name(self):
-        return "Human Pose-based Image Generation Task"
+        return "Pose-guided Image Generation"
 
     @staticmethod
     def modify_options(parser, is_train=True):

@@ -17,7 +17,7 @@ class AnimationDataset(BaseDataset):
     The dataset for animation tasks.
     For Example: 
         Face Image Animation 
-        Human Action Imitation
+        Pose-Guided Person Image Animation
     '''
 
     @staticmethod
@@ -68,7 +68,7 @@ class AnimationDataset(BaseDataset):
             if self.opt.total_test_frames is not None:
                 self.change_seq = self.frame_idx >= (self.opt.total_test_frames + self.opt.start_frame) 
             else:
-                self.change_seq = self.frame_idx + self.opt.n_frames_pre_load_test  >= self.frames_count[self.seq_idx]
+                self.change_seq = self.frame_idx >= self.frames_count[self.seq_idx]
             if self.change_seq:
                 self.seq_idx += 1
                 self.frame_idx = self.opt.start_frame
@@ -103,13 +103,12 @@ class AnimationDataset(BaseDataset):
 
 
 
-    def transform_image(self, image, resize_param, crop_param=False, method=Image.BICUBIC, angle=None, normalize=True, toTensor=True):
-        if crop_param:
-            image = F.crop(image, crop_param['top'], crop_param['left'], crop_param['height'], crop_param['width'])
-        if angle is not None:
-            image = F.affine(image, angle=angle, translate=(0,0), scale=1, shear=0)  
-        
+    def transform_image(self, image, resize_param, method=Image.BICUBIC, affine=None, normalize=True, toTensor=True, fillWhiteColor=False):
         image = F.resize(image, resize_param, interpolation=method)
+        if affine is not None:
+            angle, translate, scale = affine['angle'], affine['shift'], affine['scale']
+            fillcolor = None if not fillWhiteColor else (255,255,255)
+            image = F.affine(image, angle=angle, translate=translate, scale=scale, shear=0, fillcolor=fillcolor)  
         if toTensor:
             image = F.to_tensor(image)
         if normalize:

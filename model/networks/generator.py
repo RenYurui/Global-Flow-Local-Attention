@@ -257,11 +257,134 @@ class PoseFlowNetGenerator(BaseNetwork):
     def forward(self, source, source_B, target_B):
         flow_fields, masks = self.flow_net(source, source_B, target_B)
         return flow_fields, masks
+        
+######################################################################################################
+# Pose-Guided Person Image Animation
+######################################################################################################        
+class DanceGenerator(BaseNetwork):
+    def __init__(self,  image_nc=3, structure_nc=18, output_nc=3, ngf=64, img_f=1024, layers=6, num_blocks=2, 
+                norm='batch', activation='ReLU', attn_layer=[1,2], extractor_kz={'1':5,'2':5}, use_spect=True, use_coord=False):  
+        super(DanceGenerator, self).__init__()
+        self.source_previous = PoseSourceNet(image_nc, ngf, img_f, layers, 
+                                                    norm, activation, use_spect, use_coord)
+        self.source_reference = PoseSourceNet(image_nc, ngf, img_f, layers, 
+                                                    norm, activation, use_spect, use_coord)        
+        self.target = FaceTargetNet(image_nc, structure_nc, output_nc, ngf, img_f, layers, num_blocks, 
+                                    norm, activation, attn_layer, extractor_kz, use_spect, use_coord)
+
+        flow_norm, flow_activation = 'instance', 'LeakyReLU'
+        self.flow_net_previous = PoseFlowNet(image_nc, structure_nc, ngf=32, img_f=256, encoder_layer=5, 
+                                            attn_layer=attn_layer, norm=flow_norm, activation=flow_activation,
+                                            use_spect=use_spect, use_coord=use_coord)  
+
+        self.flow_net_reference= PoseFlowNet(image_nc, structure_nc, ngf=32, img_f=256, encoder_layer=5, 
+                                            attn_layer=attn_layer, norm=flow_norm, activation=flow_activation,
+                                            use_spect=use_spect, use_coord=use_coord)                                                     
+
+    def forward(self, BP_frame_step, P_reference, BP_reference, P_previous, BP_previous):
+        n_frames_load = BP_frame_step.size(1)
+        out_image_gen,out_flow_fields,out_masks,P_previous_recoder=[],[],[],[]
+
+        for i in range(n_frames_load):
+            BP = BP_frame_step[:,i,...]
+            P_previous  = P_reference  if P_previous  is None else  P_previous
+            BP_previous = BP_reference if BP_previous is None else  BP_previous
+            P_previous_recoder.append(P_previous)
+
+            previous_feature_list = self.source_previous(P_previous)
+            reference_feature_list = self.source_reference(P_reference)
+
+            # Sources_image = torch.cat((P_previous, P_reference ), 0)
+            # Sources_bone  = torch.cat((BP_previous,BP_reference), 0)
+            # Targets_bone  = torch.cat((BP, BP), 0)
+
+            flow_fields_p, masks_p = self.flow_net_previous( P_previous,  BP_previous,  BP)
+            flow_fields_r, masks_r = self.flow_net_reference(P_reference, BP_reference, BP)
+            flow,mask=[],[]
+            for i in range(len(flow_fields_p)):
+                flow.append(flow_fields_p[i])
+                flow.append(flow_fields_r[i])
+                mask.append(masks_p[i]) 
+                mask.append(masks_r[i]) 
+            image_gen = self.target(BP, previous_feature_list, reference_feature_list, flow, mask)
+            P_previous = image_gen
+            BP_previous = BP
+
+            out_image_gen.append(image_gen)
+            out_flow_fields.append(flow)
+            out_masks.append(mask)
+        return out_image_gen, out_flow_fields, out_masks, P_previous_recoder  
+
+
+
+class KPInput2DGenerator(BaseNetwork):
+    def __init__(self, structure_nc=18, channels=256, layers=4):  
+        super(KPInput2DGenerator, self).__init__()
+        self.kp_input = KPInputNet2D(keypoint_nc=structure_nc, channels=channels, layers=layers)
+
+       
+    def forward(self, input_2d):
+        keypoints = self.kp_input(input_2d)
+        return keypoints
+
+
+class KPInputNet2D(BaseNetwork):
+    def __init__(self, keypoint_nc=25, channels=256, layers=3, dropout=0.15, image_size=(256,256)):
+        super(KPInputNet2D, self).__init__()
+        kernel_size=3
+        self.keypoint_nc = keypoint_nc
+        self.image_size = image_size
+        self.layers = layers
+        self.expand_conv = nn.Conv1d(keypoint_nc*2, channels, kernel_size, bias=False)
+        self.expand_ln = LayerNorm1d(channels)
+
+        self.shrink = nn.Conv1d(channels, keypoint_nc*2, 1)
+        self.drop = nn.Dropout(dropout)
+        self.relu = nn.ReLU(inplace=True)  
+        self.lrelu = nn.LeakyReLU(0.1)  
+
+        layers_conv = []
+        layers_ln = []
+        self.pad=[(kernel_size - 1) // 2]
+        next_dilation = kernel_size
+        for i in range(1, self.layers):
+            self.pad.append((kernel_size - 1)*next_dilation // 2)
+            layers_conv.append(nn.Conv1d(channels,channels,kernel_size,
+                                         dilation=next_dilation,bias=False))
+            layers_ln.append(ADALN1d(channels, channels))
+            layers_conv.append(nn.Conv1d(channels, channels, 1,  dilation=1, bias=False))
+            layers_ln.append(ADALN1d(channels, channels))
+
+            next_dilation *= kernel_size
+            
+        self.layers_conv = nn.ModuleList(layers_conv)
+        self.layers_ln = nn.ModuleList(layers_ln)
+
+        self.feature_conv_1 = nn.Conv1d(keypoint_nc*2, channels, kernel_size, stride=2 ,bias=False)
+        self.feature_conv_2 = nn.Conv1d(channels, channels, kernel_size, stride=2 ,bias=False)
+        self.feature_conv_3 = nn.Conv1d(channels, channels, kernel_size, stride=2 ,bias=False)
+
+    def forward(self, kp):
+        feature = self.lrelu(self.feature_conv_1(kp))
+        feature = self.lrelu(self.feature_conv_2(feature))
+        feature = self.lrelu(self.feature_conv_3(feature))
+        feature = torch.mean(feature, 2)
+
+
+        x = self.drop(self.lrelu(self.expand_ln(self.expand_conv(kp))))
+        for i in range(self.layers - 1):
+            pad = self.pad[i+1]
+            res = x[:, :, pad : x.shape[2] - pad]
+            x = self.drop(self.lrelu(self.layers_ln[2*i](self.layers_conv[2*i](x), feature)))
+            x = res + self.drop(self.lrelu(self.layers_ln[2*i+1](self.layers_conv[2*i+1](x), feature)))
+        
+        x = self.shrink(x)
+        return x
+
 
 ######################################################################################################
 # Face Image Generation 
 ######################################################################################################        
-
 class FaceGenerator(BaseNetwork):
     def __init__(self,  image_nc=3, structure_nc=18, output_nc=3, ngf=64, img_f=1024, layers=6, num_blocks=2, 
                 norm='batch', activation='ReLU', attn_layer=[1,2], extractor_kz={'1':5,'2':5}, use_spect=True, use_coord=False):  
@@ -464,7 +587,6 @@ class FaceFlowNet(nn.Module):
 ######################################################################################################
 # Shape Net Image Generation (Multi-view synthesis)
 ######################################################################################################        
-        
 class ShapeNetGenerator(BaseNetwork):
     def __init__(self,  image_nc=3, structure_nc=18, output_nc=3, ngf=64, img_f=1024, layers=6, num_blocks=2, 
                 norm='batch', activation='ReLU',   attn_layer=[1,2], extractor_kz={'1':5,'2':5}, use_spect=True, use_coord=False):

@@ -1,8 +1,3 @@
-"""
-Copyright (C) 2019 NVIDIA Corporation.  All rights reserved.
-Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
-"""
-
 import torch.nn as nn
 import numpy as np
 import torch.nn.functional as F
@@ -11,9 +6,6 @@ import util.util as util
 from model.networks.base_function import *
 # from model.networks.external_function import SpectralNorm
 from torch.nn.utils.spectral_norm import spectral_norm as SpectralNorm
-
-
-
 
 class ResDiscriminator(BaseNetwork):
     """
@@ -104,5 +96,47 @@ class PatchDiscriminator(BaseNetwork):
     def forward(self, x):
         out = self.model(x)
         return out            
+
+class TemporalDiscriminator(BaseNetwork):
+    """
+    Temporal Discriminator Network
+    input_length: number of input image frames
+
+    """
+    def __init__(self, input_nc=3, input_length=6, ndf=64, img_f=1024, layers=6, norm='none', activation='LeakyReLU', use_spect=True,
+                 use_coord=False):
+        super(TemporalDiscriminator, self).__init__()
+
+        self.layers = layers
+        norm_layer = get_norm_layer(norm_type=norm)
+        nonlinearity = get_nonlinearity_layer(activation_type=activation)
+        self.nonlinearity = nonlinearity
+
+        # self.pool = nn.AvgPool3d(kernel_size=(1,2,2), stride=(1,2,2))
+
+        # encoder part
+        self.block0 = ResBlock3DEncoder(input_nc, 1*ndf, 1*ndf, norm_layer, nonlinearity, use_spect, use_coord)
+        self.block1 = ResBlock3DEncoder(1*ndf,    2*ndf, 1*ndf, norm_layer, nonlinearity, use_spect, use_coord)
+
+        feature_len = input_length-4
+        mult = 2*feature_len
+        for i in range(layers - 2):
+            mult_prev = mult
+            mult = min(2 ** (i + 2), img_f//ndf)
+            block = ResBlockEncoder(ndf*mult_prev, ndf*mult, ndf*mult_prev, norm_layer, nonlinearity, use_spect, use_coord)
+            setattr(self, 'encoder' + str(i), block)
+        self.conv = SpectralNorm(nn.Conv2d(ndf*mult, 1, 1))
+
+    def forward(self, x):
+        # [b,l,c,h,w] = x.shape
+        out = self.block0(x)
+        out = self.block1(out)
+        [b,c,l,h,w] = out.shape
+        out = out.view(b,-1,h,w)
+        for i in range(self.layers - 2):
+            model = getattr(self, 'encoder' + str(i))
+            out = model(out)
+        out = self.conv(self.nonlinearity(out))
+        return out
 
 

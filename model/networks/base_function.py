@@ -40,7 +40,31 @@ from torch.nn.utils.spectral_norm import spectral_norm as SpectralNorm
 
 #     print('initialize network with %s' % init_type)
 #     net.apply(init_func)
+class ResBlock3DEncoder(nn.Module):
+    """
+    Define a decoder block
+    """
+    def __init__(self, input_nc, output_nc, hidden_nc=None, norm_layer=nn.BatchNorm2d, nonlinearity= nn.LeakyReLU(),
+                 use_spect=False, use_coord=False):
+        super(ResBlock3DEncoder, self).__init__()
 
+        hidden_nc = input_nc if hidden_nc is None else hidden_nc
+
+        conv1 = spectral_norm(nn.Conv3d(input_nc,  hidden_nc, kernel_size=(3,3,3), stride=(1,1,1), padding=(1,1,1)), use_spect)
+        conv2 = spectral_norm(nn.Conv3d(hidden_nc, output_nc, kernel_size=(3,4,4), stride=(1,2,2), padding=(0,1,1)), use_spect)
+        bypass = spectral_norm(nn.Conv3d(input_nc, output_nc, kernel_size=1, stride=1, padding=0), use_spect)
+
+        if type(norm_layer) == type(None):
+            self.model = nn.Sequential(nonlinearity, conv1, nonlinearity, conv2,)
+        else:
+            self.model = nn.Sequential(norm_layer(input_nc), nonlinearity, conv1, 
+                                       norm_layer(hidden_nc), nonlinearity, conv2,)
+
+        self.shortcut = nn.Sequential(nn.AvgPool3d(kernel_size=(3,2,2), stride=(1,2,2)),bypass)
+
+    def forward(self, x):
+        out = self.model(x) + self.shortcut(x)
+        return out  
 
 # Creates SPADE normalization layer based on the given configuration
 # SPADE consists of two steps. First, it normalizes the activations using
@@ -863,6 +887,48 @@ class LinearBlock(nn.Module):
 
     def forward(self, x):
         out = self.model(x)
-        return out        
+        return out   
+             
+class LayerNorm1d(nn.Module):
+    def __init__(self, n_out, eps=1e-5, affine=True):
+        super(LayerNorm1d, self).__init__()
+        self.n_out = n_out
+        self.affine = affine
+
+        if self.affine:
+          self.weight = nn.Parameter(torch.ones(n_out, 1))
+          self.bias = nn.Parameter(torch.zeros(n_out, 1))
+
+    def forward(self, x):
+        normalized_shape = x.size()[1:]
+        if self.affine:
+          return F.layer_norm(x, normalized_shape, self.weight.expand(normalized_shape), self.bias.expand(normalized_shape))
+        else:
+          return F.layer_norm(x, normalized_shape)  
 
 
+class ADALN1d(nn.Module):
+    def __init__(self, norm_nc, feature_nc):
+        super().__init__()
+        nhidden = 128
+        use_bias=True
+        self.mlp_shared = nn.Sequential(
+            nn.Linear(feature_nc, nhidden, bias=use_bias),            
+            nn.ReLU()
+        )
+        self.mlp_gamma = nn.Linear(nhidden, norm_nc, bias=use_bias)    
+        self.mlp_beta = nn.Linear(nhidden, norm_nc, bias=use_bias)    
+
+    def forward(self, x, feature):
+        normalized_shape = x.size()[1:]
+
+        feature = feature.view(feature.size(0), -1)
+        actv = self.mlp_shared(feature)
+        gamma = self.mlp_gamma(actv)
+        beta = self.mlp_beta(actv)
+
+        gamma = gamma.view(*gamma.size()[:2], 1)
+        beta = beta.view(*beta.size()[:2], 1)
+        out = F.layer_norm(x, normalized_shape) * (1 + gamma)+beta  
+
+        return out 
