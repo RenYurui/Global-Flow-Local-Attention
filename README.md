@@ -64,6 +64,10 @@ We propose a Global-Flow Local-Attention Model for deep image spatial transforma
 </p>
 
 ## News
+* 2020.4.30 Several demos are provided for quick exploration.
+
+* 2020.4.29 Code for Pose-Guided Person Image Animation is avaliable now!
+
 * 2020.3.15 We upload the code and trained models of the [Face Animation](./IMAGE_ANIMATION.md) and [View Synthesis](VIEW_SYNTHESIS.md)!
 
 * 2020.3.3   [Project Website](https://renyurui.github.io/GFLA-web) and [Paper](https://arxiv.org/abs/2003.00696) are avaliable!
