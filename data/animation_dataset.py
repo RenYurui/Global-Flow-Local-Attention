@@ -129,7 +129,7 @@ class AnimationDataset(BaseDataset):
         if self.opt.isTrain:
             return len(self.A_paths)
         else:
-            return sum(self.frames_count)
+            return sum(self.frames_count) // self.opt.n_frames_pre_load_test
 
 
     def name(self):

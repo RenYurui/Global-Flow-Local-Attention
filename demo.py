@@ -1,4 +1,4 @@
-from options.test_options import TestOptions
+from options.val_options import ValOptions
 import data as Dataset
 from model import create_model
 from util import visualizer
@@ -7,14 +7,11 @@ import numpy as np
 import torch
 
 if __name__=='__main__':
-    # get testing options
-    opt = TestOptions().parse()
-    # creat a dataset
+    opt = ValOptions().parse()
     dataset = Dataset.create_dataloader(opt)
 
     dataset_size = len(dataset) * opt.batchSize
-    print('testing images = %d' % dataset_size)
-    # create a model
+    print('val images = %d' % dataset_size)
     model = create_model(opt)
 
     with torch.no_grad():

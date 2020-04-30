@@ -38,7 +38,7 @@ class DanceDataset(AnimationDataset):
             parser.set_defaults(total_test_frames=None)
         else:
             parser.add_argument('--start_frame', type=int, default=0, help='frame index to start inference on')        
-            parser.add_argument('--test_list', type=str, default=None, help='reference image text list')        
+            parser.add_argument('--test_list', type=str, default=None, help='image list for test')        
             parser.add_argument('--cross_eval', action='store_true', help='use cross evaluation or not')        
 
 
@@ -95,7 +95,7 @@ class DanceDataset(AnimationDataset):
 
     def get_paths(self, opt):
         root = opt.dataroot
-        phase = 'test' if opt.phase == 'val' else opt.phase
+        phase = opt.phase
         phase_dir = phase+'_256'
         self.phase_dir = phase_dir
         dir_A = os.path.join(opt.dataroot, phase_dir, 'train_A')
@@ -211,7 +211,11 @@ class DanceDataset(AnimationDataset):
 
         if not self.opt.isTrain:
             self.frame_idx += self.opt.n_frames_pre_load_test
-            change_seq = self.change_seq
+            if self.opt.total_test_frames is not None:
+                seq_total_frame = self.opt.total_test_frames
+            else:
+                seq_total_frame = self.frames_count[self.seq_idx]
+            change_seq = self.frame_idx >= seq_total_frame            
         else:
             change_seq = None
         return_list = {'gen_images': gen_images,  'gen_masks':gen_masks, 

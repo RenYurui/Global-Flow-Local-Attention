@@ -25,7 +25,7 @@ class FashionDataset(BaseDataset):
 
     def get_paths(self, opt):
         root = opt.dataroot
-        phase = 'test' if opt.phase == 'val' else opt.phase
+        phase = opt.phase
         pairLst = os.path.join(root, 'fasion-pairs-%s.csv' % phase)
         name_pairs = self.init_categories(pairLst)
         

@@ -4,15 +4,16 @@
     | 
     <a href="https://arxiv.org/abs/2003.00696">ArXiv</a>
     | 
-    <a href="./README.md/#other-application">Application</a>
+    <a href="#Get-Start">Get Start</a>
   </b>
 </p> 
+
 
 # Global-Flow-Local-Attention
 
 The source code for our paper "[Deep Image Spatial Transformation for Person Image Generation](https://arxiv.org/abs/2003.00696)" (to appear in CVPR2020)
 
-Our model can be ﬂexibly applied to tasks requiring spatial transformations such as:
+We propose a Global-Flow Local-Attention Model for deep image spatial transformation. Our model can be ﬂexibly applied to tasks such as:
 
 * **Pose-Guided Person Image Generation:**
 
@@ -64,21 +65,31 @@ Our model can be ﬂexibly applied to tasks requiring spatial transformations su
 
 ## News
 * 2020.3.15 We upload the code and trained models of the [Face Animation](./IMAGE_ANIMATION.md) and [View Synthesis](VIEW_SYNTHESIS.md)!
+
 * 2020.3.3   [Project Website](https://renyurui.github.io/GFLA-web) and [Paper](https://arxiv.org/abs/2003.00696) are avaliable!
+
 * 2020.2.29  Code for PyTorch is available now!
 
+  
+
+## Colab Demo
+
+For a quick exploration of our model, find the online colab demo. (Coming Soon)
 
 
-## Installation
 
-#### Requirements
+## Get Start
+
+### 1) Installation
+
+**Requirements**
 
 * Python 3
 * pytorch (1.0.0)
 * CUDA
 * visdom
 
-#### Conda installation
+**Conda installation**
 
 ```bash
 # 1. Create a conda virtual environment.
@@ -96,57 +107,48 @@ pip install -r requirement.txt
 
 
 
-## Pre-Trained Models
+### 2) Download Resources
 
-We provide the pre-trained weights of our models. These resources can be downloaded from:
+We provide **the pre-trained weights**  of our model. The resources are listed as following:
 
 * **Pose-Guided Person Image Generation** 
-  * **[Fashion](https://drive.google.com/open?id=1r1di3JFgaxqbyGzuRKDhNsrROiNL0s3r)**
-  * **[Market](https://drive.google.com/open?id=1be_PY61HrVLg2CUOvtNEqmaLtmY83Muw)**
+
+  Google Drive: **[Fashion](https://drive.google.com/open?id=1r1di3JFgaxqbyGzuRKDhNsrROiNL0s3r)** | **[Market](https://drive.google.com/open?id=1be_PY61HrVLg2CUOvtNEqmaLtmY83Muw)**
+
+  OneDrive: **[Fashion](https://1drv.ms/f/s!ArirMHnmz_frlAOL5s8lQ6eCfsNb)** | **[Market](https://1drv.ms/f/s!ArirMHnmz_frlAaL5s8lQ6eCfsNb)**
+
 * **Pose Guided Person Image Animation**
-  * Coming Soon 
+
+  Google Drive: **[FashionVideo](https://drive.google.com/drive/folders/14bdd02GuR1dSTGAUkO_n4Xn0RjJXmdXV?usp=sharing)** | **[iPER](https://drive.google.com/drive/folders/11660gR9qgAdJrcnfjiaBxcb8cXDWx2uf?usp=sharing)**
+
+  OneDrive: **[FashionVideo](https://1drv.ms/f/s!ArirMHnmz_frk3SL5s8lQ6eCfsNb)** | **[iPER](https://1drv.ms/f/s!ArirMHnmz_frk3iL5s8lQ6eCfsNb)**
+
 * **Face Image Animation**
-  * **[Face Animation](https://drive.google.com/open?id=1DwOR4F7dxEfqZTdQUvONPbJYJd3auTzF)**
+
+  Google Drive: **[Face Animation](https://drive.google.com/open?id=1DwOR4F7dxEfqZTdQUvONPbJYJd3auTzF)**
+
+  OneDrive: **[Face_Animation](https://1drv.ms/f/s!ArirMHnmz_frk3-L5s8lQ6eCfsNb)**
+
 * **Novel View Synthesis**
-  * **[ShapeNet Car](https://drive.google.com/open?id=1tD-s0gYPuXnvFY3X1l9ccsMLbhPEKm-b)**
-  * **[ShapeNet Chair](https://drive.google.com/open?id=1hiDxZQ6frYhfqtuvy9tXYjCfofVarcCs)**
 
+  Google Drive: **[ShapeNet Car](https://drive.google.com/open?id=1tD-s0gYPuXnvFY3X1l9ccsMLbhPEKm-b)** | **[ShapeNet Chair](https://drive.google.com/open?id=1hiDxZQ6frYhfqtuvy9tXYjCfofVarcCs)**
 
+  OneDrive: **[ShapeNet_Car](https://1drv.ms/f/s!ArirMHnmz_frlAqL5s8lQ6eCfsNb)** | **[ShapeNet_Chair](https://1drv.ms/f/s!ArirMHnmz_frlAyL5s8lQ6eCfsNb)**
 
-## Pose-Guided Person Image Generation
+Download the **Per-Trained Models**  and the **Demo Images** by running the following code:
 
-### Dataset
+``` bash
+./download.sh
+```
 
-#### Market1501
+### 3) Pose-Guided Person Image Generation
 
-- Download the Market-1501 dataset from [here](http://www.liangzheng.com.cn/Project/project_reid.html). Rename **bounding_box_train** and **bounding_box_test** as **train** and **test**, and put them under the `./dataset/market` directory
-- Download train/test key points annotations from [Google Drive](https://drive.google.com/open?id=1UAOyP-ZAKpMUoUbtXFST1AlmvQuV1uff) including **market-pairs-train.csv**, **market-pairs-test.csv**, **market-annotation-train.csv**, **market-annotation-train.csv**. Put these files under the  `./dataset/market` directory.
+The Pose-Guided Person Image Generation task is to transfer a source person image to a target pose. 
 
-#### DeepFashion
+Run the demo of this task:
 
-- Download `img_highres.zip` of the DeepFashion Dataset from [In-shop Clothes Retrieval Benchmark](https://drive.google.com/drive/folders/0B7EVK8r0v71pYkd5TzBiclMzR00). 
-
-- Unzip `img_highres.zip`. You will need to ask for password from the [dataset maintainers](http://mmlab.ie.cuhk.edu.hk/projects/DeepFashion/InShopRetrieval.html). Then put the obtained folder **img_highres** under the `./dataset/fashion` directory. 
-
-- Download train/test key points annotations and the dataset list from [Google Drive](https://drive.google.com/open?id=1BX3Bxh8KG01yKWViRY0WTyDWbJHju-SL) including **fashion-pairs-train.csv**, **fashion-pairs-test.csv**, **fashion-annotation-train.csv**, **fashion-annotation-train.csv,** **train.lst**, **test.lst**. Put these files under the  `./dataset/fashion` directory.
-
-- Run the following code to split the train/test dataset.
-
-  ```bash
-  python script/generate_fashion_datasets.py
-  ```
-
-  
-
-### Evaluation
-
-**Download the trained weights from [Fashion](https://drive.google.com/open?id=1r1di3JFgaxqbyGzuRKDhNsrROiNL0s3r),  [Market](https://drive.google.com/open?id=1be_PY61HrVLg2CUOvtNEqmaLtmY83Muw)**. Put the obtained checkpoints under `./result/pose_fashion_checkpoints` and `./result/pose_market_checkpoints` respectively.
-
-Run the following codes to obtain the pose-based transformation results.
-
-```bash
-# Test the DeepFashion dataset 
-python test.py \
+```python
+python demo.py \
 --name=pose_fashion_checkpoints \
 --model=pose \
 --attn_layer=2,3 \
@@ -154,97 +156,56 @@ python test.py \
 --gpu_id=0 \
 --dataset_mode=fashion \
 --dataroot=./dataset/fashion \
---results_dir=./eval_results/fashion
-
-# Test the market dataset
-python test.py \
---name=pose_market_checkpoints \
---model=pose \
---attn_layer=2 \
---kernel_size=2=3 \
---gpu_id=0 \
---dataset_mode=market \
---dataroot=./dataset/market \
---results_dir=./eval_results/market
+--results_dir=./demo_results/fashion
 ```
 
-You can use the provided evaluation codes to evaluate the performance of our models.
+For more training and testing details, please find the [PERSON_IMAGE_GENERATION.md](./PERSON_IMAGE_GENERATION.md)
 
-```bash
-# evaluate the performance (FID and LPIPS scores) over the DeepFashion dataset.
-CUDA_VISIBLE_DEVICES=0 python -m  script.metrics \
---gt_path=./dataset/fashion/test_256 \
---distorated_path=./eval_results/fashion \
---fid_real_path=./dataset/fashion/train_256 \
---name=./fashion
+### 4) Pose-Guided Person Image Animation
 
-# evaluate the performance (FID and LPIPS scores) over the Market dataset.
-CUDA_VISIBLE_DEVICES=0 python -m  script.metrics \
---gt_path=./dataset/market/test_12864 \
---distorated_path=./eval_results/market \
---fid_real_path=./dataset/market/train_12864 \
---name=./market_12864
-```
+The Pose-Guided Person Image Animation task generates a video clip from a still source image according to a driving target sequence.  We further model the temporal consistency for this task.
 
-**Note**: 
+Run the the demo of this task:
 
-* We calculate the LPIPS scores using the code provided by the official repository [PerceptualSimilarity](https://github.com/richzhang/PerceptualSimilarity). Please clone their repository and put the folder **PerceptualSimilarity** to the folder [script](./script).
-* For FID, the real data distributions are calculated over the whole training set. 
-
-
-
-### Training
-
-We train our model in stages. The **Flow Field Estimator** is ﬁrst trained to generate ﬂow ﬁelds. Then we train **the whole model** in an end-to-end manner. 
-
-For example, If you want to train our model with the DeepFashion dataset. You can use the following code.
-
-```bash
-# First train the Flow Field Estimator.
-python train.py \
---name=fashion \
---model=poseflownet \
+```python
+python demo.py \
+--name=dance_fashion_checkpoints \
+--model=dance \
 --attn_layer=2,3 \
 --kernel_size=2=5,3=3 \
 --gpu_id=0 \
---dataset_mode=fashion \
---dataroot=./dataset/fashion 
+--dataset_mode=dance \
+--sub_dataset=fashion \
+--dataroot=./dataset/danceFashion \
+--results_dir=./demo_results/dance_fashion \
+--test_list=val_list.csv
+```
 
-# Then, train the whole model in an end-to-end manner.
-python train.py \
---name=fashion \
---model=pose \
+For more training and testing details, please find the PERSON_IMAGE_ANIMATION.md (Coming Soon)
+
+### 5) Face Image Animation
+
+Given an input source image and a guidance video sequence depicting the structure movements, our model generating a video containing the speciﬁc movements. 
+
+```python
+python demo.py \
+--name=face_checkpoints \
+--model=face \
 --attn_layer=2,3 \
 --kernel_size=2=5,3=3 \
 --gpu_id=0 \
---dataset_mode=fashion \
---dataroot=./dataset/fashion \
---continue_train
+--dataset_mode=face \
+--dataroot=./dataset/FaceForensics \
+--results_dir=./demo_results/face 
 ```
 
-The visdom is required to show the temporary results. You can access these results with:
+We use the real video of the [FaceForensics dataset](https://github.com/ondyari/FaceForensics). See [FACE_IMAGE_ANIMATION.md](./FACE_IMAGE_ANIMATION.md) for more details.
 
-```html
-http://localhost:8096
-```
+### 6) Novel View Synthesis
 
- 
+View synthesis requires generating novel views of objects or scenes based on arbitrary input views. 
 
-## Other Applications
-
-Our model can be ﬂexibly applied to tasks requiring spatial transformation. We show two examples: **Image Animation** and **View Synthesis**.
-
-### Image Animation
-
-Given **an input source image** and **a guidance video sequence** depicting the structure movements, our model generating a video containing the speciﬁc movements. We use the real video of the [FaceForensics dataset](https://github.com/ondyari/FaceForensics). See [IMAGE_ANIMATION.md](./IMAGE_ANIMATION.md) for more details.
-
-
-
-### View synthesis
-
-View synthesis requires generating novel views of objects or scenes based on arbitrary input views. In this task, we use the car and chair categories of the [ShapeNet dataset](https://www.shapenet.org). See [VIEW_SYNTHESIS.md](VIEW_SYNTHESIS.md) for more details.
-
-
+In this task, we use the car and chair categories of the [ShapeNet dataset](https://www.shapenet.org). See [VIEW_SYNTHESIS.md](VIEW_SYNTHESIS.md) for more details.
 
 ## Citation
 

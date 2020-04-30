@@ -1,5 +1,3 @@
-# View synthesis
-
 ## ShapeNet Novel View Synthesis
 
 ### Introduction
@@ -85,5 +83,11 @@ python train.py \
 --continue_train
 ```
 
+The visdom is required to show the temporary results. You can access these results with:
 
+```html
+http://localhost:8096
+```
+
+ 
 

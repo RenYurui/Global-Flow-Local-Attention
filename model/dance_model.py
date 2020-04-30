@@ -172,10 +172,8 @@ class Dance(BaseModel):
                 self.ref_skeleton = data['ref_skeleton'].cuda()
                 self.pre_image = None
                 self.pre_skeleton = None
-                if data['change_seq']:
-                    name_list=['gt', 'vis', 'skeleton_in', 'skeleton_out']
-                    self.write2video(name_list)
 
+            self.change_seq = data['change_seq']
             self.image_paths = data['gen_paths']
             self.ref_paths = data["ref_path"]
             if not self.if_cross_eval(self.image_paths, self.ref_paths):
@@ -290,6 +288,10 @@ class Dance(BaseModel):
             img_path = os.path.join(self.opt.results_dir, out_img_name)
             skeleton_out = obtained_skeleton[i].astype(np.uint8)       
             util.save_image(skeleton_out, img_path) 
+
+        if self.change_seq:
+            name_list=['gt', 'vis', 'skeleton_in', 'skeleton_out']
+            self.write2video(name_list)            
 
     def check_image_paths(self):
         names = []

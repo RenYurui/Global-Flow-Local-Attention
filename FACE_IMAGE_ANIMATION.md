@@ -1,7 +1,3 @@
-# Image Animation
-
-
-
 ## Face Image Animation
 
 ### Introduction
@@ -61,3 +57,10 @@ python test.py \
 --nThreads=1
 ```
 
+The visdom is required to show the temporary results. You can access these results with:
+
+```html
+http://localhost:8096
+```
+
+ 

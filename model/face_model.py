@@ -134,6 +134,7 @@ class Face(BaseModel):
         self.P_images = data['P']
         self.BP_structures = data['BP']
         self.image_paths = [path[0] for path in data['P_path']]
+        self.change_seq=data['change_seq']
 
         if not self.isTrain:
             assert self.opt.batchSize == 1
@@ -142,9 +143,7 @@ class Face(BaseModel):
                 self.BP_previous = None
                 self.P_reference  = data['P'][:,:opt.image_nc, ...].cuda()
                 self.BP_reference = data['BP'][:, :opt.structure_nc, ...].cuda()
-                print(self.opt.results_dir)
-                if data['change_seq']:
-                    self.write2video()
+
             # else:
             #     self.P_previous = self.test_generated
             #     self.BP_previous = self.test_BP_previous
@@ -152,25 +151,34 @@ class Face(BaseModel):
                                                 self.image_paths[0].split('/')[-2])
            
 
-    def write2video(self):
-        images = sorted(glob.glob(self.opt.results_dir+'/*_vis.png'))
-        image_array=[]
-        for image in images:
-            image_rgb = cv2.imread(image)
-            image_array.append(image_rgb) 
+    def write2video(self, name_list):
+        images=[]
+        for name in name_list:
+            images.append(sorted(glob.glob(self.opt.results_dir+'/*_'+name+'.png')))
 
-        out_name = self.opt.results_dir+'.avi' 
+        image_array=[]
+        for i in range(len(images[0])):
+            cat_im=None
+            for image_list in images:
+                im = cv2.imread(image_list[i])
+                if cat_im is not None:
+                    cat_im = np.concatenate((cat_im, im), axis=1)
+                else:
+                    cat_im = im
+            image_array.append(cat_im) 
+
+        res=''
+        for name in name_list:
+            res += (name +'_')
+        out_name = self.opt.results_dir+'_'+res+'.mp4' 
         print('write video %s'%out_name)  
-        height, width, layers = image_rgb.shape
+        height, width, layers = cat_im.shape
         size = (width,height)
-        out = cv2.VideoWriter(out_name, cv2.VideoWriter_fourcc(*'DIVX'), 15, size)
+        out = cv2.VideoWriter(out_name, cv2.VideoWriter_fourcc(*'mp4v'), 15, size)
  
         for i in range(len(image_array)):
             out.write(image_array[i])
         out.release()
-
-
-
 
     def get_current_visuals(self):
         """Return visualization images"""
@@ -198,8 +206,6 @@ class Face(BaseModel):
         return visual_ret 
 
 
-
-
     def test(self, save_features=False, save_all=False, generate_edge=True):
         """Forward function used in test time"""
         # img_gen, flow_fields, masks = self.net_G(self.input_P1, self.input_BP1, self.input_BP2)
@@ -220,11 +226,15 @@ class Face(BaseModel):
         self.save_results(self.test_generated, data_name='vis', data_ext='png')
 
         if generate_edge:
-            value = self.BP_structures[:,0,...].unsqueeze(1)
+            value = self.BP_frame_step[:,:,0:1,...][0]
             value = (1-value)*2-1
             self.save_results(value, data_name='edge', data_ext='png')
 
-
+        if self.change_seq:
+            name_list=[] if not generate_edge else ['edge']
+            name_list.append('vis')
+            print(self.opt.results_dir)
+            self.write2video(name_list)
 
 
     def update(self):

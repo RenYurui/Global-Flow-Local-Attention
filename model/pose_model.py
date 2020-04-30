@@ -15,11 +15,10 @@ class Pose(BaseModel):
        Deep Spatial Transformation For Pose Based Image Generation
     """
     def name(self):
-        return "Pose-guided Image Generation"
+        return "Pose-Guided Person Image Generation"
 
     @staticmethod
     def modify_options(parser, is_train=True):
-        """Add new options and rewrite default values for existing options"""
         parser.add_argument('--attn_layer', action=util.StoreList, metavar="VAL1,VAL2...", help="The number layers away from output layer") 
         parser.add_argument('--kernel_size', action=util.StoreDictKeyPair, metavar="KEY1=VAL1,KEY2=VAL2...", help="Kernel Size of Local Attention Block")
 
@@ -115,9 +114,11 @@ class Pose(BaseModel):
         """Forward function used in test time"""
         img_gen, flow_fields, masks = self.net_G(self.input_P1, self.input_BP1, self.input_BP2)
         self.save_results(img_gen, data_name='vis')
-        if self.opt.save_input:
+        if self.opt.save_input or self.opt.phase == 'val':
             self.save_results(self.input_P1, data_name='ref')
             self.save_results(self.input_P2, data_name='gt')
+            result = torch.cat([self.input_P1, img_gen, self.input_P2], 3)
+            self.save_results(result, data_name='all')
                        
                 
 

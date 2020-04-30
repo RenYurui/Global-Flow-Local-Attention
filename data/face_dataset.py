@@ -48,14 +48,34 @@ class FaceDataset(AnimationDataset):
 
     def get_paths(self, opt):
         root = opt.dataroot
-        phase = 'test' if opt.phase == 'val' else opt.phase
+        phase = opt.phase
         dir_A = os.path.join(opt.dataroot, phase + '_keypoints')
         dir_B = os.path.join(opt.dataroot, phase + '_data')
 
         A_paths = sorted(make_grouped_dataset(dir_A))
         B_paths = sorted(make_grouped_dataset(dir_B)) 
         check_path_valid(A_paths, B_paths)
+        if self.opt.phase == 'test' or self.opt.phase == 'val':
+            A_paths, B_paths = self.pad_for_latest_frames(A_paths, B_paths)
         return A_paths, B_paths, None
+
+    def pad_for_latest_frames(self, A_paths, B_paths):
+        in_list = [A_paths, B_paths]
+        out_list=[]
+        for paths in in_list:
+            padded_paths=[]
+            for path in paths:
+                org_len_gen = len(path)
+                if org_len_gen%self.opt.n_frames_pre_load_test == 0:
+                    pass
+                else:
+                    pad = self.opt.n_frames_pre_load_test - org_len_gen%self.opt.n_frames_pre_load_test
+                    pad_files = [path[-1]]*pad
+                    path.extend(pad_files)
+                padded_paths.append(path)
+            out_list.append(padded_paths) 
+        [A_paths, B_paths] = out_list
+        return A_paths, B_paths
 
     def __getitem__(self, index):
         A, B, _, seq_idx = self.update_seq_idx(self.A_paths, index)        
@@ -83,7 +103,14 @@ class FaceDataset(AnimationDataset):
         
         if not self.opt.isTrain:
             self.frame_idx += self.opt.n_frames_pre_load_test
-        change_seq = False if self.opt.isTrain else self.change_seq
+            
+            if self.opt.total_test_frames is not None:
+                seq_total_frame = self.opt.total_test_frames
+            else:
+                seq_total_frame = self.frames_count[self.seq_idx]
+            change_seq = self.frame_idx >= seq_total_frame
+
+        change_seq = False if self.opt.isTrain else change_seq
 
         return_list = {'BP': A, 'P': B, 'BP_path': A_path, 
                         'P_path': image_path,'change_seq': change_seq, 'frame_idx':self.frame_idx}
