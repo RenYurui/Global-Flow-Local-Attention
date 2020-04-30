@@ -191,6 +191,8 @@ For more training and testing details, please find the PERSON_IMAGE_ANIMATION.md
 
 Given an input source image and a guidance video sequence depicting the structure movements, our model generating a video containing the speciﬁc movements. 
 
+Run the the demo of this task:
+
 ``` bash
 python demo.py \
 --name=face_checkpoints \
