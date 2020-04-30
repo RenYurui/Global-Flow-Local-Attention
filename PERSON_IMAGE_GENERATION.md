@@ -2,9 +2,11 @@
 
 The **Training and Testing details** of the pose-guided person image generation task are provided here.
 
-
-
-![person_image_animation](https://user-images.githubusercontent.com/30292465/80702562-dd337d00-8b13-11ea-95a1-1f86610a2335.png)
+<p align='center'>  
+  <img src='https://user-images.githubusercontent.com/30292465/80702562-dd337d00-8b13-11ea-95a1-1f86610a2335.png' width='700'/>
+</p>
+<p align='center'> 
+</p>
 
 ### Dataset
 
