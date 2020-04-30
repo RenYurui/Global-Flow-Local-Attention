@@ -147,7 +147,7 @@ The Pose-Guided Person Image Generation task is to transfer a source person imag
 
 Run the demo of this task:
 
-```python
+``` python
 python demo.py \
 --name=pose_fashion_checkpoints \
 --model=pose \
@@ -167,7 +167,7 @@ The Pose-Guided Person Image Animation task generates a video clip from a still 
 
 Run the the demo of this task:
 
-```python
+``` python
 python demo.py \
 --name=dance_fashion_checkpoints \
 --model=dance \
@@ -187,7 +187,7 @@ For more training and testing details, please find the PERSON_IMAGE_ANIMATION.md
 
 Given an input source image and a guidance video sequence depicting the structure movements, our model generating a video containing the speciﬁc movements. 
 
-```python
+``` python
 python demo.py \
 --name=face_checkpoints \
 --model=face \
