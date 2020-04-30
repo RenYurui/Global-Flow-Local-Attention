@@ -78,7 +78,7 @@ We propose a Global-Flow Local-Attention Model for deep image spatial transforma
 
 ## Colab Demo
 
-For a quick exploration of our model, find the online colab demo. (Coming Soon)
+For a quick exploration of our model, find the online [colab demo](https://colab.research.google.com/drive/1kDMnB9IsnuWa_KFddOXC21OD8m_Hkpow).
 
 
 
