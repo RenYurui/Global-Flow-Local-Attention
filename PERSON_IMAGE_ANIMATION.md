@@ -1,8 +1,8 @@
 ## Pose-Guided Person Image Animation
 
-The details of the person image animation task are provided here.
+The **details** of the person image animation task are provided here.
 
-The temporal consistency is modeled in this task. Specifically, the noisy poses extracted by the popular pose extraction methods are first prepossessed by a Motion Extraction Network to obtain clean poses. Then we generate the final animation results in a recurrent manner. 
+The temporal consistency is modeled in this task. Specifically, the noisy poses extracted by the popular pose extraction methods are first prepossessed by a Motion Extraction Network to obtain clean poses. Then we generate the final animation results in a recurrent manner.  Technical Report is coming soon.
 
 <p align='center'>  
   <img src='https://user-images.githubusercontent.com/30292465/80794884-943fff00-8bcd-11ea-8287-91489b86deff.gif' width='800'/>
@@ -11,7 +11,7 @@ The temporal consistency is modeled in this task. Specifically, the noisy poses 
   <b>From Left to Right</b>: Skeleton Squences. Propossessed Skeleton Seqences; Animation Results.
 </p>
 
-### Dataset
+###Dataset
 
 We provide the [Alphapose](https://github.com/MVIG-SJTU/AlphaPose) extraction results of these datasets. Meanwhile, the prepossessed clean poses are also avaliable. Please use the following code to download these resources.
 
@@ -100,4 +100,16 @@ python test.py \
 --results_dir=./dataset/iPER/train_256/train_video2d \
 --eval_set=train
 ```
+
+
+
+
+
+
+
+
+
+
+
+
 
