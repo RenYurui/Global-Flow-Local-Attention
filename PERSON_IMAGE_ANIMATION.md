@@ -11,7 +11,7 @@ The temporal consistency is modeled in this task. Specifically, the noisy poses 
   <b>From Left to Right</b>: Skeleton Squences. Propossessed Skeleton Seqences; Animation Results.
 </p>
 
-###Dataset
+### Dataset
 
 We provide the [Alphapose](https://github.com/MVIG-SJTU/AlphaPose) extraction results of these datasets. Meanwhile, the prepossessed clean poses are also avaliable. Please use the following code to download these resources.
 
@@ -100,16 +100,4 @@ python test.py \
 --results_dir=./dataset/iPER/train_256/train_video2d \
 --eval_set=train
 ```
-
-
-
-
-
-
-
-
-
-
-
-
 
