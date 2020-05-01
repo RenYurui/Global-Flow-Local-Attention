@@ -29,11 +29,12 @@ We propose a Global-Flow Local-Attention Model for deep image spatial transforma
 * **Pose-Guided Person Image Animation**
 
 <p align='center'>  
-  <img src='https://user-images.githubusercontent.com/30292465/75778006-fe852080-5d91-11ea-8e76-dd87f6c021f7.gif' width='900'/>
+  <img src='https://user-images.githubusercontent.com/30292465/80788758-9352a180-8bbc-11ea-958d-d604e5cea1b9.gif' width='800'/>
 </p>
 <p align='center'> 
-  <b>From Left to Right</b>: Real Video; Extracted Pose; Animation Results.
+  <b>Left most</b>: Skeleton Squences. <b>The others</b>: Animation Results.
 </p>
+
 
 
 * **Face Image Animation**
