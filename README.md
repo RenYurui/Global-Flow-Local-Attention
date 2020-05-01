@@ -186,7 +186,7 @@ python demo.py \
 --test_list=val_list.csv
 ```
 
-For more training and testing details, please find the PERSON_IMAGE_ANIMATION.md (Coming Soon)
+For more training and testing details, please find the [PERSON_IMAGE_ANIMATION.md.](./PERSON_IMAGE_ANIMATION.md)
 
 ### 5) Face Image Animation
 
