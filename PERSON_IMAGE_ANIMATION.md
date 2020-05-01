@@ -1,6 +1,6 @@
 ## Pose-Guided Person Image Animation
 
-The **details** of the person image animation task are provided here.
+The details of the person image animation task are provided here.
 
 The temporal consistency is modeled in this task. Specifically, the noisy poses extracted by the popular pose extraction methods are first prepossessed by a Motion Extraction Network to obtain clean poses. Then we generate the final animation results in a recurrent manner. 
 
