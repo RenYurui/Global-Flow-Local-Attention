@@ -10,7 +10,7 @@ Person image animation is to generate a video clip using a source person image a
 <p align='center'> 
   <b>From Left to Right</b>: Skeleton Squences. Propossessed Skeleton Seqences; Animation Results.
 </p>
-###Dataset
+### Dataset
 
 Two datasets are used in this task: [The FashionVideo dataset](https://vision.cs.ubc.ca/datasets/fashion/) and [the iPER dataset](https://svip-lab.github.io/project/impersonator). 
 
@@ -67,7 +67,7 @@ python test.py \
 --checkpoints_dir=result
 ```
 
-### Training on custom dataset 
+### Training on your custom dataset 
 
 If you want to train the model on your own dataset, you need to first extract the skeletons using the pose extraction algorithm Alphapose. Then extract the clean skeletons from the niose data using the **motion extraction net**. 
 
@@ -102,7 +102,7 @@ python test.py \
 
 
 
-After obtain the clean skeletons. You can train our model on your dataset using the following code
+After obtain the clean skeletons. You can train our model on your dataset using the following code. (Note: you need to modify the `dance_dataset.py` to add your dataset as a sub_set)
 
 ``` bash
 python train.py \
