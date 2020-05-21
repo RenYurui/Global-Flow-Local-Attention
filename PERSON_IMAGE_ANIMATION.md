@@ -2,7 +2,7 @@
 
 The **details** of the person image animation task are provided here.
 
-The temporal consistency is modeled in this task. Specifically, the noisy poses extracted by the popular pose extraction methods are first prepossessed by a Motion Extraction Network to obtain clean poses. Then we generate the final animation results in a recurrent manner.  Technical Report is coming soon.
+Person image animation is to generate a video clip using a source person image and target pose skeletons. Compare with the pose-guided person image generation task, this task requires to model the temporal consistency. Therefore, we modify the model in two ways: the noisy poses extracted by the popular pose extraction methods are first prepossessed by a Motion Extraction Network to obtain clean poses. Then we generate the final animation results in a recurrent manner.  Technical Report is coming soon.
 
 <p align='center'>  
   <img src='https://user-images.githubusercontent.com/30292465/80794884-943fff00-8bcd-11ea-8287-91489b86deff.gif' width='800'/>
@@ -10,28 +10,28 @@ The temporal consistency is modeled in this task. Specifically, the noisy poses 
 <p align='center'> 
   <b>From Left to Right</b>: Skeleton Squences. Propossessed Skeleton Seqences; Animation Results.
 </p>
-
 ###Dataset
 
-We provide the [Alphapose](https://github.com/MVIG-SJTU/AlphaPose) extraction results of these datasets. Meanwhile, the prepossessed clean poses are also avaliable. Please use the following code to download these resources.
+Two datasets are used in this task: [The FashionVideo dataset](https://vision.cs.ubc.ca/datasets/fashion/) and [the iPER dataset](https://svip-lab.github.io/project/impersonator). 
 
-``` bash
-./script/download_animation_skeletons.sh
-```
+* Download the videos of the datasets.
 
-#### FashionVideo
+* We provide the [Alphapose](https://github.com/MVIG-SJTU/AlphaPose) extraction results of these datasets. Meanwhile, the prepossessed clean poses are also avaliable. Please use the following code to download these resources.
 
-* Follow the instruction on dataset downloading [here](https://vision.cs.ubc.ca/datasets/fashion/). Extracted images from the original videos and resize them as 256 x 256. 
-* Extract human poses using [Alphapose](https://github.com/MVIG-SJTU/AlphaPose). Jump this step if you have downloaded our provided resources.
-* Follow the provided demo datasets `./dataset/danceFasion/val_256` (download using `./download.sh`) to build your training and testing set `./dataset/danceFasion/train_256`, `./dataset/danceFasion/test_256`.
+  ``` bash
+  ./script/download_animation_skeletons.sh
+  ```
 
-#### iPER
+* Extract the image frames and resize them as 256 x 256 using the following code
 
-* This dataset can be download from [here](https://svip-lab.github.io/project/impersonator). Extracted images from the original videos and resize them as 256 x 256. 
-* Extract human poses using [Alphapose](https://github.com/MVIG-SJTU/AlphaPose).  Jump this step if you have downloaded our provided resources.
-* Follow the provided demo datasets `./dataset/danceFasion/val_256` (download using `./download.sh`) to build your training and testing set `./dataset/iPER/train_256`, `./dataset/iPER/test_256`.
+  ``` bash
+  python ./script/extract_video_frames.py \
+  --frame_root=[path to write the video frames] \
+  --video_path=[path to the mp4 files] \
+  --anno_path=[path to the previously downloaded skeletons]
+  ```
 
-
+Note: you can also extract the skeleton on your own. Please use the [Alphapose](https://github.com/MVIG-SJTU/AlphaPose) algorithm and output the results with openpose format.
 
 ### Testing
 
@@ -67,11 +67,11 @@ python test.py \
 --checkpoints_dir=result
 ```
 
+### Training on custom dataset 
 
+If you want to train the model on your own dataset, you need to first extract the skeletons using the pose extraction algorithm Alphapose. Then extract the clean skeletons from the niose data using the **motion extraction net**. 
 
-### Motion Extraction Net
-
-We provide the details of the motion extraction net to support training and testing on custom datasets. You do not need this if you only want to test on the FashionVideo and iPER dataset.
+#### Motion Extraction Net
 
 This network is used to prepossess the noisy skeletons extracted by some pose extraction models. We train this model using the Human36M dataset. We download the training ground-truth label `data_2d_h36m_gt.npz` from [here](https://github.com/facebookresearch/VideoPose3D/blob/master/DATASETS.md). The corresponding input label `data_2d_h36m_detectron_pt_coco.npz` is download from [here](https://github.com/facebookresearch/VideoPose3D/issues/2#issuecomment-444687031).
 
@@ -94,14 +94,28 @@ python test.py \
 --model=keypoint \
 --gpu_id=2 \
 --dataset_mode=keypointtest \
---continue_train \
---dataroot=./dataset/iPER \
+--dataroot=[root path of your dataset] \
 --sub_dataset=iper \
---results_dir=./dataset/iPER/train_256/train_video2d \
---eval_set=train
+--results_dir=[path to save the results] \
+--eval_set=[train/test/val]
 ```
 
 
+
+After obtain the clean skeletons. You can train our model on your dataset using the following code
+
+``` bash
+python train.py \
+--name=[name_of_the_experiment] \
+--model=dance \
+--attn_layer=2,3 \
+--kernel_size=2=5,3=3 \
+--gpu_id=0,1 \
+--dataset_mode=dance \
+--sub_dataset=[iper/fashion/your_dataset_name] \
+--dataroot=[your_dataset_root] \
+--continue_train
+```
 
 
 
