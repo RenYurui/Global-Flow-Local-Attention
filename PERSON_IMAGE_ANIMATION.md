@@ -10,6 +10,8 @@ Person image animation is to generate a video clip using a source person image a
 <p align='center'> 
   <b>From Left to Right</b>: Skeleton Squences. Propossessed Skeleton Seqences; Animation Results.
 </p>
+
+
 ### Dataset
 
 Two datasets are used in this task: [The FashionVideo dataset](https://vision.cs.ubc.ca/datasets/fashion/) and [the iPER dataset](https://svip-lab.github.io/project/impersonator). 
