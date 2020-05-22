@@ -18,7 +18,7 @@ Two datasets are used in this task: [The FashionVideo dataset](https://vision.cs
 
 * Download the videos of the datasets.
 
-* We provide the [Alphapose](https://github.com/MVIG-SJTU/AlphaPose) extraction results of these datasets. Meanwhile, the prepossessed clean poses are also avaliable. Please use the following code to download these resources.
+* We provide the [Alphapose](https://github.com/MVIG-SJTU/AlphaPose) extraction results of these datasets. Meanwhile, the prepossessed clean poses are also available. Please use the following code to download these resources.
 
   ``` bash
   ./script/download_animation_skeletons.sh
@@ -71,7 +71,7 @@ python test.py \
 
 ### Training on your custom dataset 
 
-If you want to train the model on your own dataset, you need to first extract the skeletons using the pose extraction algorithm Alphapose. Then extract the clean skeletons from the niose data using the **motion extraction net**. 
+If you want to train the model on your own dataset, you need to first extract the skeletons using the pose extraction algorithm Alphapose. Then extract the clean skeletons from the noisy data using the **motion extraction net**. 
 
 #### Motion Extraction Net
 
@@ -88,7 +88,7 @@ python train.py \
 --continue_train
 ```
 
-We also provide the [trained weights](https://drive.google.com/drive/folders/1Tc1MkSuFnGv9a_TcANQcChK6IS43oKQo). Assuming that you want to smooth the skeleton sequences of the iPER training set, you can use the following code
+We also provide trained weights](https://drive.google.com/drive/folders/1Tc1MkSuFnGv9a_TcANQcChK6IS43oKQo). Assuming that you want to smooth the skeleton sequences of the iPER training set, you can use the following code
 
 ``` bash
 python test.py \
