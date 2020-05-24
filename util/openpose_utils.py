@@ -1,6 +1,6 @@
 # openpose_utils
 import numpy as np
-from skimage.draw import circle, line_aa, polygon, circle_perimeter_aa
+from skimage.draw import disk, line_aa, polygon, circle_perimeter_aa
 from skimage import morphology
 import math
 import numbers
@@ -157,7 +157,7 @@ def draw_joint(colors, pose_joints, joint_line_list, radius=2):
     for i in range(pose_joints.shape[1]):
         if pose_joints[0,i] == MISSING_VALUE or pose_joints[1,i] == MISSING_VALUE:
             continue
-        yy, xx = circle(pose_joints[0,i], pose_joints[1,i], radius=radius, shape=im_size)
+        yy, xx = disk((pose_joints[0,i], pose_joints[1,i]), radius=radius, shape=im_size)
         colors[yy, xx] = colormap[i]
     return colors
 
@@ -349,7 +349,7 @@ class tensor2skeleton():
         mask = np.zeros(shape=image_size, dtype=np.uint8)
         for i in range(pose_joints.shape[1]):
             yy, xx, val = circle_perimeter_aa(pose_joints[0,i], pose_joints[1,i], radius=radius)
-            # yy, xx = circle(pose_joints[0,i], pose_joints[1,i], radius=radius, shape=im_size)
+            # yy, xx = disk((pose_joints[0,i], pose_joints[1,i]), radius=radius, shape=im_size)
             yy[yy>image_size[0]-1]=image_size[0]-1
             xx[xx>image_size[1]-1]=image_size[1]-1
             mask[yy, xx] = 1 
