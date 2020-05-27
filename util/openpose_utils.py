@@ -148,9 +148,7 @@ def draw_joint(colors, pose_joints, joint_line_list, radius=2):
         if from_missing or to_missing:
             continue
         yy, xx, val = line_aa(pose_joints[0,f], pose_joints[1,f], pose_joints[0,t], pose_joints[1,t])
-        yy[yy>im_size[0]-1]=im_size[0]-1
-        xx[xx>im_size[1]-1]=im_size[1]-1
-        yy, xx = np.clip(yy, 0, 255), np.clip(xx, 0, 255)
+        yy, xx = np.clip(yy, 0, im_size[0]-1), np.clip(xx, 0, im_size[1]-1)
         colors[yy, xx] = np.expand_dims(val, 1) * 255
         # mask[yy, xx] = True
 
@@ -159,7 +157,6 @@ def draw_joint(colors, pose_joints, joint_line_list, radius=2):
         if pose_joints[0,i] == MISSING_VALUE or pose_joints[1,i] == MISSING_VALUE:
             continue
         yy, xx = circle(pose_joints[0,i], pose_joints[1,i], radius=radius, shape=im_size)
-        yy, xx = np.clip(yy, 0, 255), np.clip(xx, 0, 255)
         colors[yy, xx] = colormap[i]
     return colors
 
