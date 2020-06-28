@@ -11,7 +11,7 @@
 
 # Global-Flow-Local-Attention
 
-The source code for our paper "[Deep Image Spatial Transformation for Person Image Generation](https://arxiv.org/abs/2003.00696)" (to appear in CVPR2020)
+The source code for our paper "[Deep Image Spatial Transformation for Person Image Generation](https://arxiv.org/abs/2003.00696)" (CVPR2020)
 
 We propose a Global-Flow Local-Attention Model for deep image spatial transformation. Our model can be ﬂexibly applied to tasks such as:
 
