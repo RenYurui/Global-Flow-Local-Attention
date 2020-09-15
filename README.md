@@ -223,6 +223,14 @@ In this task, we use the car and chair categories of the [ShapeNet dataset](http
   journal={arXiv preprint arXiv:2003.00696},
   year={2020}
 }
+
+@article{ren2020deep,
+  title={Deep Spatial Transformation for Pose-Guided Person Image Generation and Animation},
+  author={Ren, Yurui and Li, Ge and Liu, Shan and Li, Thomas H},
+  journal={IEEE Transactions on Image Processing},
+  year={2020},
+  publisher={IEEE}
+}
 ```
 
 ## Acknowledgement 
