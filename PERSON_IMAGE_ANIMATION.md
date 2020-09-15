@@ -2,7 +2,7 @@
 
 The **details** of the person image animation task are provided here.
 
-Person image animation is to generate a video clip using a source person image and target pose skeletons. Compare with the pose-guided person image generation task, this task requires to model the temporal consistency. Therefore, we modify the model in two ways: the noisy poses extracted by the popular pose extraction methods are first prepossessed by a Motion Extraction Network to obtain clean poses. Then we generate the final animation results in a recurrent manner.  Technical Report is coming soon.
+Person image animation is to generate a video clip using a source person image and target pose skeletons. Compare with the pose-guided person image generation task, this task requires to model the temporal consistency. Therefore, we modify the model in two ways: the noisy poses extracted by the popular pose extraction methods are first prepossessed by a Motion Extraction Network to obtain clean poses. Then we generate the final animation results in a recurrent manner. The technical details are provided in this [paper](https://arxiv.org/abs/2008.12606).
 
 <p align='center'>  
   <img src='https://user-images.githubusercontent.com/30292465/80794884-943fff00-8bcd-11ea-8287-91489b86deff.gif' width='800'/>
