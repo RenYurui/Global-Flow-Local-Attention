@@ -1,4 +1,4 @@
-wget -O dataset/animation_skeletons.rar https://1drv.ws/u/s\!ArirMHnmz_frlBeL5s8lQ6eCfsNb
+wget -O dataset/animation_skeletons.rar https://1drv.ms/u/s!ArirMHnmz_frlBfWgrPlnCFBJYiw?e=LOiHEI
 cd dataset
 unrar x animation_skeletons.rar
 cd danceFashion/train_256
