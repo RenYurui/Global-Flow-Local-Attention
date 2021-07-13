@@ -88,7 +88,7 @@ python train.py \
 --continue_train
 ```
 
-We also provide trained weights](https://drive.google.com/drive/folders/1Tc1MkSuFnGv9a_TcANQcChK6IS43oKQo). Assuming that you want to smooth the skeleton sequences of the iPER training set, you can use the following code
+We also provide trained [weights](https://drive.google.com/drive/folders/1Tc1MkSuFnGv9a_TcANQcChK6IS43oKQo). Assuming that you want to smooth the skeleton sequences of the iPER training set, you can use the following code
 
 ``` bash
 python test.py \
