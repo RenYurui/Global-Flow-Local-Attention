@@ -1,4 +1,4 @@
-wget -O result.rar https://1drv.ws/u/s\!ArirMHnmz_frk3NXeXKRyntPKqkD
-wget -O dataset.rar https://1drv.ws/u/s\!ArirMHnmz_frlBWL5s8lQ6eCfsNb
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1GyerWR0X-JDUIRs-AtmK_2iR7-J0jyZf' -O result.rar
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1oy2-IU1t383wG_yKuGwqvdWedDvxXS8V' -O dataset.rar
 unrar x result.rar
 unrar x dataset.rar
