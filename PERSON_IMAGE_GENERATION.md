@@ -82,7 +82,7 @@ CUDA_VISIBLE_DEVICES=0 python -m  script.metrics \
 **Note**: 
 
 - ~~We calculate the LPIPS scores using the code provided by the official repository [PerceptualSimilarity](https://github.com/richzhang/PerceptualSimilarity). Please clone their repository and put the folder **PerceptualSimilarity** to the folder [script](./script).~~
-- This scrip is deprecated as the official repository of [LPIPS](https://github.com/richzhang/PerceptualSimilarity) has been updated. Please refere to their git for the evaluation.
+- This scrip is deprecated as the official repository of [LPIPS](https://github.com/richzhang/PerceptualSimilarity) has been updated. Please refer to their git for the evaluation.
 - For FID, the real data distributions are calculated over the whole training set. 
 
 
