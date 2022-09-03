@@ -67,10 +67,10 @@ class ShapeNetFlow(BaseModel):
         input_P2, input_BP2 = input['P2'], input['BP2']
 
         if len(self.gpu_ids) > 0:
-            self.input_P1 = input_P1.cuda(self.gpu_ids[0], async=True)
-            self.input_BP1 = input_BP1.cuda(self.gpu_ids[0], async=True)
-            self.input_P2 = input_P2.cuda(self.gpu_ids[0], async=True)
-            self.input_BP2 = input_BP2.cuda(self.gpu_ids[0], async=True)        
+            self.input_P1 = input_P1.cuda(self.gpu_ids[0], non_blocking=True)
+            self.input_BP1 = input_BP1.cuda(self.gpu_ids[0], non_blocking=True)
+            self.input_P2 = input_P2.cuda(self.gpu_ids[0], non_blocking=True)
+            self.input_BP2 = input_BP2.cuda(self.gpu_ids[0], non_blocking=True)        
 
         self.input_BP1 = self.obtain_shape_net_semantic(self.input_BP1)
         self.input_BP2 = self.obtain_shape_net_semantic(self.input_BP2)

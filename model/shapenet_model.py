@@ -91,15 +91,15 @@ class ShapeNet(BaseModel):
 
         if len(self.gpu_ids) > 0:
             if self.opt.isTrain:
-                self.input_P1 = input_P1.cuda(self.gpu_ids[0], async=True)
-                self.input_BP1 = input_BP1.cuda(self.gpu_ids[0], async=True)
-                self.input_P2 = input_P2.cuda(self.gpu_ids[0], async=True)
-                self.input_BP2 = input_BP2.cuda(self.gpu_ids[0], async=True)        
+                self.input_P1 = input_P1.cuda(self.gpu_ids[0], non_blocking=True)
+                self.input_BP1 = input_BP1.cuda(self.gpu_ids[0], non_blocking=True)
+                self.input_P2 = input_P2.cuda(self.gpu_ids[0], non_blocking=True)
+                self.input_BP2 = input_BP2.cuda(self.gpu_ids[0], non_blocking=True)        
             else:
-                self.input_P1  = input_P1.cuda(self.gpu_ids[0], async=True)
-                self.input_BP1 = input_BP1.cuda(self.gpu_ids[0], async=True)
-                self.input_P2  = [item.cuda(self.gpu_ids[0], async=True) for item in input_P2]
-                self.input_BP2 = [item.cuda(self.gpu_ids[0], async=True) for item in input_BP2]
+                self.input_P1  = input_P1.cuda(self.gpu_ids[0], non_blocking=True)
+                self.input_BP1 = input_BP1.cuda(self.gpu_ids[0], non_blocking=True)
+                self.input_P2  = [item.cuda(self.gpu_ids[0], non_blocking=True) for item in input_P2]
+                self.input_BP2 = [item.cuda(self.gpu_ids[0], non_blocking=True) for item in input_BP2]
 
         if self.opt.isTrain:
             self.input_BP1 = self.obtain_shape_net_semantic(self.input_BP1)
